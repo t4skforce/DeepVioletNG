@@ -1,2 +1,2 @@
 # DeepVioletNG
-Tool for introspection of SSL\TLS sessions
+Tool for introspection of SSL/TLS sessions
