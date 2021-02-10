@@ -22,12 +22,27 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.target.version>1.8</java.target.version>
 		<java.source.version>1.8</java.source.version>
+		<jackson.databind>2.12.1</jackson.databind>
+		<commons.lang3>3.11</commons.lang3>
 		<maven.compiler.plugin>3.8.1</maven.compiler.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<exec.maven.plugin>3.0.0</exec.maven.plugin>
 	</properties>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons.lang3}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.databind}</version>
+		</dependency>
+	</dependencies>
 	<build>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -51,7 +66,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>io.github.t4skforce.deepviolet.Main</mainClass>
+					<mainClass>io.github.t4skforce.deepviolet.CipherMapBuilder</mainClass>
 					<arguments>
 						<argument>foo</argument>
 						<argument>bar</argument>
