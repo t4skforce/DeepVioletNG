@@ -27,6 +27,9 @@
 		<maven.compiler.plugin>3.8.1</maven.compiler.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<exec.maven.plugin>3.0.0</exec.maven.plugin>
+		<sonar.projectKey>t4skforce_DeepVioletNG</sonar.projectKey>
+		<sonar.organization>deepvioletng</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
@@ -66,10 +69,10 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>io.github.t4skforce.deepviolet.CipherMapBuilder</mainClass>
+					<mainClass>io.github.t4skforce.deepviolet.build.CipherMapBuilder</mainClass>
 					<arguments>
-						<argument>foo</argument>
-						<argument>bar</argument>
+						<argument>${project.build.resources[0].directory}</argument>
+						<argument>ciphermap.json</argument>
 					</arguments>
 				</configuration>
 			</plugin>
@@ -90,6 +93,7 @@
 									</mainClass>
 								</manifest>
 							</archive>
+							Y
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
