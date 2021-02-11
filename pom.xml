@@ -24,6 +24,8 @@
 		<java.source.version>1.8</java.source.version>
 		<jackson.databind>2.12.1</jackson.databind>
 		<commons.lang3>3.11</commons.lang3>
+		<commons.collections4>4.4</commons.collections4>
+		<guava>30.1-jre</guava>
 		<maven.compiler.plugin>3.8.1</maven.compiler.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<exec.maven.plugin>3.0.0</exec.maven.plugin>
@@ -37,6 +39,18 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons.lang3}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>${commons.collections4}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
@@ -72,7 +86,6 @@
 					<mainClass>io.github.t4skforce.deepviolet.build.CipherMapBuilder</mainClass>
 					<arguments>
 						<argument>${project.build.resources[0].directory}</argument>
-						<argument>ciphermap.json</argument>
 					</arguments>
 				</configuration>
 			</plugin>
