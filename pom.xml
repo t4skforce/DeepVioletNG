@@ -27,6 +27,7 @@
 		<commons.collections4>4.4</commons.collections4>
 		<guava>30.1-jre</guava>
 		<maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<exec.maven.plugin>3.0.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.6</jacoco.maven.plugin>
@@ -79,6 +80,15 @@
 					<target>${java.target.version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <version>${maven.surefire.plugin}</version>
+	            <configuration>
+	                <excludes>
+	                </excludes>
+	            </configuration>
+	        </plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>

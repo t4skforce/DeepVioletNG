@@ -1,6 +1,7 @@
 package io.github.t4skforce.deepviolet.json.mozilla;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,8 @@ public class MozillaCertsTest {
 	}
 
 	@Test
-	public void testLucky() throws Exception {
+	public void testMapping() throws Exception {
+		assertNotNull(objectMapper);
 		MozillaCerts certs = objectMapper
 				.readValue(Downloader.get("https://ssl-config.mozilla.org/guidelines/latest.json"), MozillaCerts.class);
 		assertEquals(certs.getConfigurations().size(), 3);
