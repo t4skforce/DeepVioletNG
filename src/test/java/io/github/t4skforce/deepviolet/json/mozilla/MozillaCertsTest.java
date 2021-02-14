@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.t4skforce.deepviolet.util.Downloader;
 
-public class MozillaCertsTest {
+class MozillaCertsTest {
 
 	private ObjectMapper objectMapper;
 
@@ -24,11 +24,11 @@ public class MozillaCertsTest {
 	}
 
 	@Test
-	public void testMapping() throws Exception {
+	void testMapping() throws Exception {
 		assertNotNull(objectMapper);
 		MozillaCerts certs = objectMapper
 				.readValue(Downloader.get("https://ssl-config.mozilla.org/guidelines/latest.json"), MozillaCerts.class);
-		assertEquals(certs.getConfigurations().size(), 3);
+		assertEquals(3, certs.getConfigurations().size());
 	}
 
 }
