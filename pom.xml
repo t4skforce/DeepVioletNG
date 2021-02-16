@@ -27,14 +27,29 @@
 		<commons.collections4>4.4</commons.collections4>
 		<guava>30.1-jre</guava>
 		<maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<exec.maven.plugin>3.0.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.6</jacoco.maven.plugin>
+		<junit.jupiter>5.7.1</junit.jupiter>
 		<sonar.projectKey>t4skforce_DeepVioletNG</sonar.projectKey>
 		<sonar.organization>deepvioletng</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
+	<scm>
+		<connection>scm:git:${project.scm.url}</connection>
+		<developerConnection>scm:git:${project.scm.url}</developerConnection>
+		<url>https://github.com/t4skforce/DeepVioletNG.git</url>
+		<tag>HEAD</tag>
+	</scm>
+	<distributionManagement>
+		<repository>
+			<id>ossrh</id>
+			<name>Central Repository OSSRH</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
@@ -60,6 +75,12 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.databind}</version>
 		</dependency>
+		<dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter}</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -72,6 +93,15 @@
 					<target>${java.target.version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <version>${maven.surefire.plugin}</version>
+	            <configuration>
+	                <excludes>
+	                </excludes>
+	            </configuration>
+	        </plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -136,6 +166,13 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>XXX</version>
+				<configuration>
+					<scmCommentPrefix>[ci skip]</scmCommentPrefix>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
