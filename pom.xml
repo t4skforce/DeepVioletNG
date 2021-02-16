@@ -25,13 +25,17 @@
 		<jackson.databind>2.12.1</jackson.databind>
 		<commons.lang3>3.11</commons.lang3>
 		<commons.collections4>4.4</commons.collections4>
+		<commons.io>2.8.0</commons.io>
 		<guava>30.1-jre</guava>
 		<maven.compiler.plugin>3.8.1</maven.compiler.plugin>
 		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<exec.maven.plugin>3.0.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.6</jacoco.maven.plugin>
+		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
+		<maven.failsafe.plugin>3.0.0-M5</maven.failsafe.plugin>
 		<junit.jupiter>5.7.1</junit.jupiter>
+		<com.google.truth>1.1.2</com.google.truth>
 		<sonar.projectKey>t4skforce_DeepVioletNG</sonar.projectKey>
 		<sonar.organization>deepvioletng</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -76,11 +80,23 @@
 			<version>${jackson.databind}</version>
 		</dependency>
 		<dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter}</version>
-            <scope>test</scope>
-        </dependency>
+			<groupId>com.google.truth</groupId>
+			<artifactId>truth</artifactId>
+			<version>${com.google.truth}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.jupiter}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit.jupiter}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -94,14 +110,14 @@
 				</configuration>
 			</plugin>
 			<plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-surefire-plugin</artifactId>
-	            <version>${maven.surefire.plugin}</version>
-	            <configuration>
-	                <excludes>
-	                </excludes>
-	            </configuration>
-	        </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin}</version>
+				<configuration>
+					<excludes>
+					</excludes>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -120,6 +136,32 @@
 						<argument>${project.build.resources[0].directory}</argument>
 					</arguments>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin}</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*IntegrationTest</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven.failsafe.plugin}</version>
+				<configuration>
+					<includes>
+						<include>**/*IntegrationTest</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>

@@ -1,7 +1,10 @@
 package io.github.t4skforce.deepviolet.json.mozilla;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,8 +20,6 @@ public class MozillaConfig {
 
     @JsonProperty("certificate_types")
     private Set<String> certificateTypes = new TreeSet<>();
-
-    // ciphers ignore we map differently
 
     @JsonProperty("ciphersuites")
     private Set<String> ciphersuites = new TreeSet<>();
@@ -55,6 +56,19 @@ public class MozillaConfig {
 
     @JsonProperty("tls_versions")
     private Set<TLSVersion> tlsVersions = new TreeSet<>();
+    
+    @JsonProperty("openssl_ciphersuites")
+    public void setOpenSslCiphersuites(Set<String> suites) {
+    	setCiphersuites(suites);
+    }
+    
+    @JsonProperty("ciphers")
+    public Map<String,Set<String>> ciphers = new TreeMap<>();
+    
+    @JsonProperty("openssl_ciphers")
+    public void setOpenSslCiphers(Set<String> ciphers) {
+    	this.ciphers.put("openssl", ciphers);
+    }
 
     public Set<String> getCertificateCurves() {
         return certificateCurves;
@@ -176,4 +190,11 @@ public class MozillaConfig {
         this.tlsVersions = tlsVersions;
     }
 
+	public Map<String, Set<String>> getCiphers() {
+		return ciphers;
+	}
+
+	public void setCiphers(Map<String, Set<String>> ciphers) {
+		this.ciphers = ciphers;
+	}
 }
