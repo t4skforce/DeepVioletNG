@@ -20,8 +20,7 @@
 	</licenses>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.target.version>1.8</java.target.version>
-		<java.source.version>1.8</java.source.version>
+		<java.version>11</java.version>
 		<jackson.databind>2.12.1</jackson.databind>
 		<commons.lang3>3.11</commons.lang3>
 		<commons.collections4>4.4</commons.collections4>
@@ -105,8 +104,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin}</version>
 				<configuration>
-					<source>${java.source.version}</source>
-					<target>${java.target.version}</target>
+					<release>${java.version}</release>
 				</configuration>
 			</plugin>
 			<plugin>
