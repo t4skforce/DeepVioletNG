@@ -135,6 +135,9 @@
 					<excludes>
 						<exclude>**/*IntegrationTest</exclude>
 					</excludes>
+					<argLine>
+						--illegal-access=permit
+					</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -144,6 +147,9 @@
 					<includes>
 						<include>**/*IntegrationTest</include>
 					</includes>
+					<argLine>
+						--illegal-access=permit
+					</argLine>
 				</configuration>
 				<executions>
 					<execution>
