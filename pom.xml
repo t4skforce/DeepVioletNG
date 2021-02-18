@@ -164,9 +164,12 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>${maven.checkstyle.plugin}</version>
 				<configuration>
-			        <configLocation>checkstyle.xml</configLocation>
-			        <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
-			    </configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<violationSeverity>warning</violationSeverity>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>false</failsOnError>
+					<includeTestSourceDirectory>false</includeTestSourceDirectory>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -201,6 +204,19 @@
 					<scmCommentPrefix>[ci skip]</scmCommentPrefix>
 				</configuration>
 			</plugin>
+			<!-- FIX: for mvn site not working for report generation -->
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.9.1</version>
+			</plugin>
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.1.1</version>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -232,4 +248,27 @@
 			</build>
 		</profile>
 	</profiles>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven.checkstyle.plugin}</version>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<violationSeverity>warning</violationSeverity>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>false</failsOnError>
+					<includeTestSourceDirectory>false</includeTestSourceDirectory>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
