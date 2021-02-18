@@ -42,7 +42,7 @@
 		<sonar.organization>deepvioletng</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-		<sonar.java.spotbugs.reportPaths>${project.build.directory}/site/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
+		<sonar.java.spotbugs.reportPaths>${project.build.directory}/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
 		<sonar.java.checkstyle.reportPaths>${project.build.directory}/checkstyle-result.xml</sonar.java.checkstyle.reportPaths>
 	</properties>
 	<scm>
