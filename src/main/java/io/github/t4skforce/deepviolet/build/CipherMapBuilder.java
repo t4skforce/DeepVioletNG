@@ -217,8 +217,8 @@ public class CipherMapBuilder {
     Matcher sources = REGEX_GNUTLS_NAMES.matcher(Downloader.get(GNUTLS_URL));
     while (sources.find()) {
       String hex = String.format("%s,%s",
-          sources.group("hex1").trim().toUpperCase().replaceAll("X", "x"),
-          sources.group("hex2").trim().toUpperCase().replaceAll("X", "x"));
+          sources.group("hex1").trim().toUpperCase().replace("X", "x"),
+          sources.group("hex2").trim().toUpperCase().replace("X", "x"));
       String name = sources.group("name").trim().toUpperCase();
       if (!cipherMapJson.containsKey(hex)) {
         warn("warn.not.iana", "NSS", hex, name);
