@@ -134,7 +134,7 @@ public class CipherMapBuilder {
     this.warnConsumer.accept(StringUtils.joinWith(".", BASE_KEY, key), params);
   }
 
-  private int parseIana() throws Exception {
+  private int parseIana() throws IOException {
     int cnt = 0;
     log("info.fetching", "IANA", IANA_URL);
     Matcher sources = REGEX_IANA.matcher(Downloader.get(IANA_URL));
@@ -156,7 +156,7 @@ public class CipherMapBuilder {
     return cnt;
   }
 
-  private int parseNss() throws Exception {
+  private int parseNss() throws IOException {
     int cnt = 0;
     log("info.fetching", "NSS", NSS_URL);
     Matcher sources = REGEX_NSS.matcher(Downloader.get(NSS_URL));
@@ -177,7 +177,7 @@ public class CipherMapBuilder {
     return cnt;
   }
 
-  private int parseOpenSsl() throws Exception {
+  private int parseOpenSsl() throws IOException {
     int cnt = 0;
     log("info.fetching", "OpenSSL", NSS_URL);
     String content = Downloader.get(OPENSSL_URL);
@@ -211,7 +211,7 @@ public class CipherMapBuilder {
     return cnt;
   }
 
-  private int parseGnuTls() throws Exception {
+  private int parseGnuTls() throws IOException {
     int cnt = 0;
     log("info.fetching", "GnuTLS", NSS_URL);
     Matcher sources = REGEX_GNUTLS_NAMES.matcher(Downloader.get(GNUTLS_URL));
