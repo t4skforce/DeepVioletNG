@@ -31,12 +31,13 @@
 		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<maven.release.plugin>2.5.3</maven.release.plugin>
+		<maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
+		<spotbugs.maven.plugin>4.2.0</spotbugs.maven.plugin>
 		<exec.maven.plugin>3.0.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.6</jacoco.maven.plugin>
 		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
 		<junit.jupiter>5.7.1</junit.jupiter>
 		<com.google.truth>1.1.2</com.google.truth>
-		<maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
 		<sonar.projectKey>t4skforce_DeepVioletNG</sonar.projectKey>
 		<sonar.organization>deepvioletng</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -170,7 +171,7 @@
 					<failsOnError>false</failsOnError>
 					<includeTestSourceDirectory>false</includeTestSourceDirectory>
 				</configuration>
-			</plugin>
+			</plugin>			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -269,6 +270,29 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			<plugin>
+			<groupId>com.github.spotbugs</groupId>
+			<artifactId>spotbugs-maven-plugin</artifactId>
+			<version>${spotbugs.maven.plugin}</version>
+			<configuration>
+				<effort>Max</effort>
+				<threshold>Default</threshold>
+				<spotbugsXmlOutput>true</spotbugsXmlOutput>
+				<spotbugsXmlOutputDirectory>target/site</spotbugsXmlOutputDirectory>
+				<skipEmptyReport>false</skipEmptyReport>
+				<encoding>${project.build.sourceEncoding}</encoding>
+				<includeTests>true</includeTests>
+				<classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
+				<spotbugs.xmlOutput>true</spotbugs.xmlOutput>
+			</configuration>
+			<reportSets>
+				<reportSet>
+					<reports>
+						<report>spotbugs</report>
+					</reports>
+				</reportSet>
+			</reportSets>
+		</plugin>
 		</plugins>
 	</reporting>
 </project>
