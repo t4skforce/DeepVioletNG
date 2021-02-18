@@ -173,7 +173,7 @@
 					<failsOnError>false</failsOnError>
 					<includeTestSourceDirectory>false</includeTestSourceDirectory>
 				</configuration>
-			</plugin>			
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -273,28 +273,32 @@
 				</reportSets>
 			</plugin>
 			<plugin>
-			<groupId>com.github.spotbugs</groupId>
-			<artifactId>spotbugs-maven-plugin</artifactId>
-			<version>${spotbugs.maven.plugin}</version>
-			<configuration>
-				<effort>Max</effort>
-				<threshold>Low</threshold>
-				<spotbugsXmlOutput>true</spotbugsXmlOutput>
-				<spotbugsXmlOutputDirectory>target/site</spotbugsXmlOutputDirectory>
-				<skipEmptyReport>false</skipEmptyReport>
-				<encoding>${project.build.sourceEncoding}</encoding>
-				<includeTests>true</includeTests>
-				<classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
-				<spotbugs.xmlOutput>true</spotbugs.xmlOutput>
-			</configuration>
-			<reportSets>
-				<reportSet>
-					<reports>
-						<report>spotbugs</report>
-					</reports>
-				</reportSet>
-			</reportSets>
-		</plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>${spotbugs.maven.plugin}</version>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+					<spotbugsXmlOutput>true</spotbugsXmlOutput>
+					<spotbugsXmlOutputDirectory>${project.build.directory}/site</spotbugsXmlOutputDirectory>
+					<skipEmptyReport>false</skipEmptyReport>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<includeTests>true</includeTests>
+					<classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
+					<spotbugs.xmlOutput>true</spotbugs.xmlOutput>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>spotbugs</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</reporting>
 </project>
