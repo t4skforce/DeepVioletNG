@@ -278,7 +278,7 @@
 			<version>${spotbugs.maven.plugin}</version>
 			<configuration>
 				<effort>Max</effort>
-				<threshold>Default</threshold>
+				<threshold>Low</threshold>
 				<spotbugsXmlOutput>true</spotbugsXmlOutput>
 				<spotbugsXmlOutputDirectory>target/site</spotbugsXmlOutputDirectory>
 				<skipEmptyReport>false</skipEmptyReport>
