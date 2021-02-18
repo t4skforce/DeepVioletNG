@@ -20,7 +20,8 @@
 	</licenses>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>11</java.version>
+		<java.source.version>1.8</java.source.version>
+		<java.target.version>1.8</java.target.version>
 		<jackson.databind>2.12.1</jackson.databind>
 		<commons.lang3>3.11</commons.lang3>
 		<commons.collections4>4.4</commons.collections4>
@@ -32,7 +33,6 @@
 		<exec.maven.plugin>3.0.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.6</jacoco.maven.plugin>
 		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
-		<maven.failsafe.plugin>3.0.0-M5</maven.failsafe.plugin>
 		<junit.jupiter>5.7.1</junit.jupiter>
 		<com.google.truth>1.1.2</com.google.truth>
 		<sonar.projectKey>t4skforce_DeepVioletNG</sonar.projectKey>
@@ -104,7 +104,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin}</version>
 				<configuration>
-					<release>${java.version}</release>
+					<source>${java.source.version}</source>
+					<target>${java.target.version}</target>
+					<verbose>true</verbose>
 				</configuration>
 			</plugin>
 			<plugin>
