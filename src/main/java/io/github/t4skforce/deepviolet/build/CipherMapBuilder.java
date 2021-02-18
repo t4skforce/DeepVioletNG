@@ -82,7 +82,7 @@ public class CipherMapBuilder {
     return new CipherMapBuilder();
   }
 
-  public CipherMapBuilder build() throws Exception {
+  public CipherMapBuilder build() throws IOException {
     parseIana();
     parseNss();
     parseOpenSsl();
