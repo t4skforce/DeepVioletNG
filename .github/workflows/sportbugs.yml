@@ -23,7 +23,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
-        run: mvn -B verify spotbugs:spotbugs
+        run: mvn -B verify com.github.spotbugs:spotbugs-maven-plugin:4.2.0:spotbugs
       - uses: jwgmeligmeyling/spotbugs-github-action@master
         with:
           path: '**/spotbugsXml.xml'
