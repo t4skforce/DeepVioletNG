@@ -1,200 +1,197 @@
 package io.github.t4skforce.deepviolet.json.mozilla;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.t4skforce.deepviolet.json.TlsVersion;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.github.t4skforce.deepviolet.json.TLSVersion;
-
 public class MozillaConfig {
 
-    @JsonProperty("certificate_curves")
-    private Set<String> certificateCurves = new TreeSet<>();
+  @JsonProperty("certificate_curves")
+  private Set<String> certificateCurves = new TreeSet<>();
 
-    @JsonProperty("certificate_signatures")
-    private Set<String> certificateSignatures = new TreeSet<>();
+  @JsonProperty("certificate_signatures")
+  private Set<String> certificateSignatures = new TreeSet<>();
 
-    @JsonProperty("certificate_types")
-    private Set<String> certificateTypes = new TreeSet<>();
+  @JsonProperty("certificate_types")
+  private Set<String> certificateTypes = new TreeSet<>();
 
-    @JsonProperty("ciphersuites")
-    private Set<String> ciphersuites = new TreeSet<>();
+  @JsonProperty("ciphersuites")
+  private Set<String> ciphersuites = new TreeSet<>();
 
-    @JsonProperty("dh_param_size")
-    private Integer dhParamSize;
+  @JsonProperty("dh_param_size")
+  private Integer dhParamSize;
 
-    @JsonProperty("ecdh_param_size")
-    private Integer ecdhParamSize;
+  @JsonProperty("ecdh_param_size")
+  private Integer ecdhParamSize;
 
-    @JsonProperty("hsts_min_age")
-    private Long hstsMinAge;
+  @JsonProperty("hsts_min_age")
+  private Long hstsMinAge;
 
-    @JsonProperty("maximum_certificate_lifespan")
-    private Long maximumCertificateLifespan;
+  @JsonProperty("maximum_certificate_lifespan")
+  private Long maximumCertificateLifespan;
 
-    @JsonProperty("ocsp_staple")
-    private Boolean ocspStaple;
+  @JsonProperty("ocsp_staple")
+  private Boolean ocspStaple;
 
-    @JsonProperty("oldest_clients")
-    private Set<String> oldestClients = new TreeSet<>();
+  @JsonProperty("oldest_clients")
+  private Set<String> oldestClients = new TreeSet<>();
 
-    @JsonProperty("recommended_certificate_lifespan")
-    private Long recommendedCertificateLifespan;
+  @JsonProperty("recommended_certificate_lifespan")
+  private Long recommendedCertificateLifespan;
 
-    @JsonProperty("rsa_key_size")
-    private Long rsaKeySize;
+  @JsonProperty("rsa_key_size")
+  private Long rsaKeySize;
 
-    @JsonProperty("server_preferred_order")
-    private Boolean serverPeferredOrder;
+  @JsonProperty("server_preferred_order")
+  private Boolean serverPeferredOrder;
 
-    @JsonProperty("tls_curves")
-    private Set<String> tlsCurves = new TreeSet<>();
+  @JsonProperty("tls_curves")
+  private Set<String> tlsCurves = new TreeSet<>();
 
-    @JsonProperty("tls_versions")
-    private Set<TLSVersion> tlsVersions = new TreeSet<>();
-    
-    @JsonProperty("openssl_ciphersuites")
-    public void setOpenSslCiphersuites(Set<String> suites) {
-    	setCiphersuites(suites);
-    }
-    
-    @JsonProperty("ciphers")
-    public Map<String,Set<String>> ciphers = new TreeMap<>();
-    
-    @JsonProperty("openssl_ciphers")
-    public void setOpenSslCiphers(Set<String> ciphers) {
-    	this.ciphers.put("openssl", ciphers);
-    }
+  @JsonProperty("tls_versions")
+  private Set<TlsVersion> tlsVersions = new TreeSet<>();
 
-    public Set<String> getCertificateCurves() {
-        return certificateCurves;
-    }
+  @JsonProperty("openssl_ciphersuites")
+  public void setOpenSslCiphersuites(Set<String> suites) {
+    setCiphersuites(suites);
+  }
 
-    public void setCertificateCurves(Set<String> certificateCurves) {
-        this.certificateCurves = certificateCurves;
-    }
+  @JsonProperty("ciphers")
+  public Map<String, Set<String>> ciphers = new TreeMap<>();
 
-    public Set<String> getCertificateSignatures() {
-        return certificateSignatures;
-    }
+  @JsonProperty("openssl_ciphers")
+  public void setOpenSslCiphers(Set<String> ciphers) {
+    this.ciphers.put("openssl", ciphers);
+  }
 
-    public void setCertificateSignatures(Set<String> certificateSignatures) {
-        this.certificateSignatures = certificateSignatures;
-    }
+  public Set<String> getCertificateCurves() {
+    return certificateCurves;
+  }
 
-    public Set<String> getCertificateTypes() {
-        return certificateTypes;
-    }
+  public void setCertificateCurves(Set<String> certificateCurves) {
+    this.certificateCurves = certificateCurves;
+  }
 
-    public void setCertificateTypes(Set<String> certificateTypes) {
-        this.certificateTypes = certificateTypes;
-    }
+  public Set<String> getCertificateSignatures() {
+    return certificateSignatures;
+  }
 
-    public Set<String> getCiphersuites() {
-        return ciphersuites;
-    }
+  public void setCertificateSignatures(Set<String> certificateSignatures) {
+    this.certificateSignatures = certificateSignatures;
+  }
 
-    public void setCiphersuites(Set<String> ciphersuites) {
-        this.ciphersuites = ciphersuites;
-    }
+  public Set<String> getCertificateTypes() {
+    return certificateTypes;
+  }
 
-    public Integer getDhParamSize() {
-        return dhParamSize;
-    }
+  public void setCertificateTypes(Set<String> certificateTypes) {
+    this.certificateTypes = certificateTypes;
+  }
 
-    public void setDhParamSize(Integer dhParamSize) {
-        this.dhParamSize = dhParamSize;
-    }
+  public Set<String> getCiphersuites() {
+    return ciphersuites;
+  }
 
-    public Integer getEcdhParamSize() {
-        return ecdhParamSize;
-    }
+  public void setCiphersuites(Set<String> ciphersuites) {
+    this.ciphersuites = ciphersuites;
+  }
 
-    public void setEcdhParamSize(Integer ecdhParamSize) {
-        this.ecdhParamSize = ecdhParamSize;
-    }
+  public Integer getDhParamSize() {
+    return dhParamSize;
+  }
 
-    public Long getHstsMinAge() {
-        return hstsMinAge;
-    }
+  public void setDhParamSize(Integer dhParamSize) {
+    this.dhParamSize = dhParamSize;
+  }
 
-    public void setHstsMinAge(Long hstsMinAge) {
-        this.hstsMinAge = hstsMinAge;
-    }
+  public Integer getEcdhParamSize() {
+    return ecdhParamSize;
+  }
 
-    public Long getMaximumCertificateLifespan() {
-        return maximumCertificateLifespan;
-    }
+  public void setEcdhParamSize(Integer ecdhParamSize) {
+    this.ecdhParamSize = ecdhParamSize;
+  }
 
-    public void setMaximumCertificateLifespan(Long maximumCertificateLifespan) {
-        this.maximumCertificateLifespan = maximumCertificateLifespan;
-    }
+  public Long getHstsMinAge() {
+    return hstsMinAge;
+  }
 
-    public Boolean getOcspStaple() {
-        return ocspStaple;
-    }
+  public void setHstsMinAge(Long hstsMinAge) {
+    this.hstsMinAge = hstsMinAge;
+  }
 
-    public void setOcspStaple(Boolean ocspStaple) {
-        this.ocspStaple = ocspStaple;
-    }
+  public Long getMaximumCertificateLifespan() {
+    return maximumCertificateLifespan;
+  }
 
-    public Set<String> getOldestClients() {
-        return oldestClients;
-    }
+  public void setMaximumCertificateLifespan(Long maximumCertificateLifespan) {
+    this.maximumCertificateLifespan = maximumCertificateLifespan;
+  }
 
-    public void setOldestClients(Set<String> oldestClients) {
-        this.oldestClients = oldestClients;
-    }
+  public Boolean getOcspStaple() {
+    return ocspStaple;
+  }
 
-    public Long getRecommendedCertificateLifespan() {
-        return recommendedCertificateLifespan;
-    }
+  public void setOcspStaple(Boolean ocspStaple) {
+    this.ocspStaple = ocspStaple;
+  }
 
-    public void setRecommendedCertificateLifespan(Long recommendedCertificateLifespan) {
-        this.recommendedCertificateLifespan = recommendedCertificateLifespan;
-    }
+  public Set<String> getOldestClients() {
+    return oldestClients;
+  }
 
-    public Long getRsaKeySize() {
-        return rsaKeySize;
-    }
+  public void setOldestClients(Set<String> oldestClients) {
+    this.oldestClients = oldestClients;
+  }
 
-    public void setRsaKeySize(Long rsaKeySize) {
-        this.rsaKeySize = rsaKeySize;
-    }
+  public Long getRecommendedCertificateLifespan() {
+    return recommendedCertificateLifespan;
+  }
 
-    public Boolean getServerPeferredOrder() {
-        return serverPeferredOrder;
-    }
+  public void setRecommendedCertificateLifespan(Long recommendedCertificateLifespan) {
+    this.recommendedCertificateLifespan = recommendedCertificateLifespan;
+  }
 
-    public void setServerPeferredOrder(Boolean serverPeferredOrder) {
-        this.serverPeferredOrder = serverPeferredOrder;
-    }
+  public Long getRsaKeySize() {
+    return rsaKeySize;
+  }
 
-    public Set<String> getTlsCurves() {
-        return tlsCurves;
-    }
+  public void setRsaKeySize(Long rsaKeySize) {
+    this.rsaKeySize = rsaKeySize;
+  }
 
-    public void setTlsCurves(Set<String> tlsCurves) {
-        this.tlsCurves = tlsCurves;
-    }
+  public Boolean getServerPeferredOrder() {
+    return serverPeferredOrder;
+  }
 
-    public Set<TLSVersion> getTlsVersions() {
-        return tlsVersions;
-    }
+  public void setServerPeferredOrder(Boolean serverPeferredOrder) {
+    this.serverPeferredOrder = serverPeferredOrder;
+  }
 
-    public void setTlsVersions(Set<TLSVersion> tlsVersions) {
-        this.tlsVersions = tlsVersions;
-    }
+  public Set<String> getTlsCurves() {
+    return tlsCurves;
+  }
 
-	public Map<String, Set<String>> getCiphers() {
-		return ciphers;
-	}
+  public void setTlsCurves(Set<String> tlsCurves) {
+    this.tlsCurves = tlsCurves;
+  }
 
-	public void setCiphers(Map<String, Set<String>> ciphers) {
-		this.ciphers = ciphers;
-	}
+  public Set<TlsVersion> getTlsVersions() {
+    return tlsVersions;
+  }
+
+  public void setTlsVersions(Set<TlsVersion> tlsVersions) {
+    this.tlsVersions = tlsVersions;
+  }
+
+  public Map<String, Set<String>> getCiphers() {
+    return ciphers;
+  }
+
+  public void setCiphers(Map<String, Set<String>> ciphers) {
+    this.ciphers = ciphers;
+  }
 }
