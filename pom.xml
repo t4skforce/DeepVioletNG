@@ -133,30 +133,7 @@
 					<excludes>
 						<exclude>**/*IntegrationTest</exclude>
 					</excludes>
-					<argLine>
-						--illegal-access=permit
-					</argLine>
 				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${maven.failsafe.plugin}</version>
-				<configuration>
-					<includes>
-						<include>**/*IntegrationTest</include>
-					</includes>
-					<argLine>
-						--illegal-access=permit
-					</argLine>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
@@ -213,4 +190,33 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+		    <id>surefire</id>
+		    <build>
+			<plugins>
+			    <plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+				<executions>
+				    <execution>
+					<phase>integration-test</phase>
+					<goals>
+					    <goal>test</goal>
+					</goals>
+					<configuration>
+					    <excludes>
+						<exclude>none</exclude>
+					    </excludes>
+					    <includes>
+						<include>**/*IntegrationTest</include>
+					    </includes>
+					</configuration>
+				    </execution>
+				</executions>
+			    </plugin>
+			</plugins>
+		    </build>
+		</profile>
+	</profiles>
 </project>
