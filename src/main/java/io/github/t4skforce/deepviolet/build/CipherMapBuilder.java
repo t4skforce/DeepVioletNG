@@ -246,13 +246,13 @@ public class CipherMapBuilder {
     return this;
   }
 
-  private static String format(String key, Object[] params) {
-    return MessageFormat.format(RES_BUNDLE.getString(key).replace("'", "''"), params);
-  }
-
   @FunctionalInterface
   public interface MessageConsumer<T, U> {
     public void accept(T key, U params);
+  }
+  
+  public static String format(String key, Object[] params) {
+    return MessageFormat.format(RES_BUNDLE.getString(key).replace("'", "''"), params);
   }
 
   @SuppressWarnings("all")
