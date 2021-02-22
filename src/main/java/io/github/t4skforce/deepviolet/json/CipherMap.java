@@ -248,16 +248,15 @@ public class CipherMap extends HashMap<String, CipherMapClassificationsJson> {
     public static String format(String key, Object[] params) {
       return MessageFormat.format(RES_BUNDLE.getString(key).replace("'", "''"), params);
     }
+  }
 
-    @SuppressWarnings("all")
-    public static void main(String[] args) throws Exception {
-      CipherMap.builder().log((key, params) -> {
-        System.out.println("[INFO] " + Builder.format(key, params));
-      }).warn((key, params) -> {
-        System.out.println("[WARNING] " + Builder.format(key, params));
-      }).fetch().write(Paths.get(args[0], Builder.CIPHERMAP_JSON).toFile());
-    }
-
+  @SuppressWarnings("all")
+  public static void main(String[] args) throws Exception {
+    CipherMap.builder().log((key, params) -> {
+      System.out.println("[INFO] " + Builder.format(key, params));
+    }).warn((key, params) -> {
+      System.out.println("[WARNING] " + Builder.format(key, params));
+    }).fetch().write(Paths.get(args[0], Builder.CIPHERMAP_JSON).toFile());
   }
 
 }
