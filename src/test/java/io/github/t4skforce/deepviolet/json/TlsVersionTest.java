@@ -42,8 +42,7 @@ class TlsVersionTest {
     assertEquals(TlsVersion.of(TlsVersion.TLS_V1_1), TlsVersion.of("TLSv1.1"));
     assertNotEquals(TlsVersion.of(TlsVersion.TLS_V1_1), TlsVersion.of("TLSv1.2"));
     assertNotEquals(null, TlsVersion.of(TlsVersion.TLS_V1_1));
-    boolean result = TlsVersion.of(TlsVersion.TLS_V1_1).equals(null);
-    assertFalse(result);
+    assertFalse(TlsVersion.of(TlsVersion.TLS_V1_1).equals(null));
   }
 
   @Test
