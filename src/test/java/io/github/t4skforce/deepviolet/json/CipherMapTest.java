@@ -1,4 +1,4 @@
-package io.github.t4skforce.deepviolet.build;
+package io.github.t4skforce.deepviolet.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,8 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Resources;
 
-import io.github.t4skforce.deepviolet.build.CipherMapBuilder.MessageConsumer;
-import io.github.t4skforce.deepviolet.json.CipherMapJson;
+import io.github.t4skforce.deepviolet.json.CipherMap.Builder.MessageConsumer;
 import io.github.t4skforce.deepviolet.util.Downloader;
 
 import java.io.File;
@@ -35,7 +34,7 @@ import org.mockito.MockedStatic;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-class CipherMapBuilderTest {
+class CipherMapTest {
 
   private static final Answer<String> ANSWER_BY_URL = new Answer<String>() {
     @Override
@@ -61,25 +60,25 @@ class CipherMapBuilderTest {
   @Test
   void testFallbackFetch() throws Exception {
     try (MockedStatic<Downloader> mock = mockStatic(Downloader.class)) {
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.IANA_URL))).thenReturn(StringUtils.EMPTY);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.NSS_URL))).thenReturn(StringUtils.EMPTY);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.OPENSSL_URL)))
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.IANA_URL))).thenReturn(StringUtils.EMPTY);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.NSS_URL))).thenReturn(StringUtils.EMPTY);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.OPENSSL_URL)))
           .thenReturn(StringUtils.EMPTY);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.GNUTLS_URL)))
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.GNUTLS_URL)))
           .thenReturn(StringUtils.EMPTY);
 
       // fall back to local resource version if nothing can be fetched
-      assertEquals(CipherMapBuilder.builder().fetch().build().keySet(),
-          CipherMapBuilder.builder().build().keySet());
+      assertEquals(CipherMap.builder().fetch().build().keySet(),
+          CipherMap.builder().build().keySet());
     }
   }
 
   @Test
   void testParseIana() throws Exception {
     try (MockedStatic<Downloader> mock = mockStatic(Downloader.class)) {
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
 
-      CipherMapJson data = CipherMapBuilder.builder().fetchIana().build();
+      CipherMap data = CipherMap.builder().fetchIana().build();
 
       assertEquals(ciphermap.size(), data.size());
       for (Entry<String, Map<String, String>> entry : ciphermap.entrySet()) {
@@ -92,10 +91,10 @@ class CipherMapBuilderTest {
   @Test
   void testParseNss() throws Exception {
     try (MockedStatic<Downloader> mock = mockStatic(Downloader.class)) {
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.NSS_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.NSS_URL))).thenAnswer(ANSWER_BY_URL);
 
-      CipherMapJson data = CipherMapBuilder.builder().fetchIana().fetchNss().build();
+      CipherMap data = CipherMap.builder().fetchIana().fetchNss().build();
 
       assertEquals(ciphermap.size(), data.size());
       for (Entry<String, Map<String, String>> entry : ciphermap.entrySet()) {
@@ -108,10 +107,10 @@ class CipherMapBuilderTest {
   @Test
   void testParseOpenSsl() throws Exception {
     try (MockedStatic<Downloader> mock = mockStatic(Downloader.class)) {
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.OPENSSL_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.OPENSSL_URL))).thenAnswer(ANSWER_BY_URL);
 
-      CipherMapJson data = CipherMapBuilder.builder().fetchIana().fetchOpenSsl().build();
+      CipherMap data = CipherMap.builder().fetchIana().fetchOpenSsl().build();
 
       assertEquals(ciphermap.size(), data.size());
       for (Entry<String, Map<String, String>> entry : ciphermap.entrySet()) {
@@ -124,10 +123,10 @@ class CipherMapBuilderTest {
   @Test
   void testParseGnuTls() throws Exception {
     try (MockedStatic<Downloader> mock = mockStatic(Downloader.class)) {
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.GNUTLS_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.GNUTLS_URL))).thenAnswer(ANSWER_BY_URL);
 
-      CipherMapJson data = CipherMapBuilder.builder().fetchIana().fetchGnuTls().build();
+      CipherMap data = CipherMap.builder().fetchIana().fetchGnuTls().build();
 
       assertEquals(ciphermap.size(), data.size());
       for (Entry<String, Map<String, String>> entry : ciphermap.entrySet()) {
@@ -140,12 +139,12 @@ class CipherMapBuilderTest {
   @Test
   void testParsAll() throws Exception {
     try (MockedStatic<Downloader> mock = mockStatic(Downloader.class)) {
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.NSS_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.OPENSSL_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.GNUTLS_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.NSS_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.OPENSSL_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.GNUTLS_URL))).thenAnswer(ANSWER_BY_URL);
 
-      CipherMapJson data = CipherMapBuilder.builder().fetch().build();
+      CipherMap data = CipherMap.builder().fetch().build();
 
       assertEquals(ciphermap.size(), data.size());
       for (Entry<String, Map<String, String>> entry : ciphermap.entrySet()) {
@@ -161,7 +160,7 @@ class CipherMapBuilderTest {
   @Test
   void testBuildFile() throws Exception {
     File source = new File(Resources.getResource("ciphermap.json").getFile());
-    CipherMapJson data = CipherMapBuilder.builder().build(source);
+    CipherMap data = CipherMap.builder().load(source).build();
     assertEquals(ciphermap.size(), data.size());
     for (Entry<String, Map<String, String>> entry : ciphermap.entrySet()) {
       assertTrue(data.containsKey(entry.getKey()));
@@ -174,7 +173,7 @@ class CipherMapBuilderTest {
 
   @Test
   void testBuildResource() throws Exception {
-    CipherMapJson data = CipherMapBuilder.builder().build("ciphermap.json");
+    CipherMap data = CipherMap.builder().load("ciphermap.json").build();
     assertEquals(ciphermap.size(), data.size());
     for (Entry<String, Map<String, String>> entry : ciphermap.entrySet()) {
       assertTrue(data.containsKey(entry.getKey()));
@@ -189,7 +188,7 @@ class CipherMapBuilderTest {
   void testWrite(@TempDir Path tempDir) throws Exception {
     Path ciphermapOut = tempDir.resolve("ciphermap.json.out");
 
-    CipherMapBuilder.builder().load("ciphermap.json").write(ciphermapOut.toFile());
+    CipherMap.builder().load("ciphermap.json").write(ciphermapOut.toFile());
 
     String output = new String(Files.readAllBytes(ciphermapOut), StandardCharsets.UTF_8);
     String input = Resources.toString(Resources.getResource("ciphermap.json"),
@@ -210,15 +209,15 @@ class CipherMapBuilderTest {
   void testLogging() throws Exception {
 
     try (MockedStatic<Downloader> mock = mockStatic(Downloader.class)) {
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.NSS_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.OPENSSL_URL))).thenAnswer(ANSWER_BY_URL);
-      mock.when(() -> Downloader.get(eq(CipherMapBuilder.GNUTLS_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.IANA_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.NSS_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.OPENSSL_URL))).thenAnswer(ANSWER_BY_URL);
+      mock.when(() -> Downloader.get(eq(CipherMap.Builder.GNUTLS_URL))).thenAnswer(ANSWER_BY_URL);
 
       MessageTester log = mock(MessageTester.class);
       MessageTester warn = mock(MessageTester.class);
 
-      CipherMapBuilder.builder().log(log).warn(warn).fetch().build();
+      CipherMap.builder().log(log).warn(warn).fetch().build();
 
       verify(log, times(4)).accept(eq("cypher.builder.info.fetching"), any(Object[].class));
       verify(log, times(4)).accept(eq("cypher.builder.info.found"), any(Object[].class));
@@ -230,7 +229,7 @@ class CipherMapBuilderTest {
   @Test
   void testFormat() throws Exception {
     assertEquals("found 123 entries",
-        CipherMapBuilder.format("cypher.builder.info.found", new Object[] { 123 }));
+        CipherMap.Builder.format("cypher.builder.info.found", new Object[] { 123 }));
   }
 
 }
