@@ -86,35 +86,44 @@ public class CipherMapBuilder {
     return new CipherMapBuilder();
   }
 
-  public CipherMapBuilder fetch() throws IOException {
-    parseIana();
-    parseNss();
-    parseOpenSsl();
-    parseGnuTls();
-    return this;
-  }
+  
 
   public CipherMapBuilder write(File target) throws IOException {
     ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
     writer.writeValue(target, cipherMapJson);
     return this;
   }
-
-  public CipherMapJson build() throws IOException {
+  
+  public CipherMapBuilder load() throws IOException {
     if (MapUtils.isEmpty(cipherMapJson)) {
       cipherMapJson = build(CIPHERMAP_JSON);
     }
+    return this;
+  }
+  
+  public CipherMapBuilder load(File file) throws IOException {
+    cipherMapJson = mapper.readValue(file, CipherMapJson.class);
+    return this;
+  }
+  
+  public CipherMapBuilder load(String resourceName) throws IOException {
+    String json = Resources.toString(Resources.getResource(resourceName), StandardCharsets.UTF_8);
+    cipherMapJson = mapper.readValue(json, CipherMapJson.class);
+    return this;
+  }
+
+  public CipherMapJson build() throws IOException {
+    load();
     return cipherMapJson;
   }
 
   public CipherMapJson build(File file) throws IOException {
-    cipherMapJson = mapper.readValue(file, CipherMapJson.class);
+    load(file);
     return cipherMapJson;
   }
 
   public CipherMapJson build(String resourceName) throws IOException {
-    String json = Resources.toString(Resources.getResource(resourceName), StandardCharsets.UTF_8);
-    cipherMapJson = mapper.readValue(json, CipherMapJson.class);
+    load(resourceName);
     return cipherMapJson;
   }
 
@@ -135,8 +144,12 @@ public class CipherMapBuilder {
   private void warn(String key, Object... params) {
     this.warnConsumer.accept(StringUtils.joinWith(".", BASE_KEY, key), params);
   }
+  
+  public CipherMapBuilder fetch() throws IOException {
+    return fetchIana().fetchNss().fetchOpenSsl().fetchGnuTls();
+  }
 
-  private int parseIana() throws IOException {
+  public CipherMapBuilder fetchIana() throws IOException {
     int cnt = 0;
     log(MSG_INFO_FETCHING, "IANA", IANA_URL);
     Matcher sources = REGEX_IANA.matcher(Downloader.get(IANA_URL));
@@ -154,10 +167,10 @@ public class CipherMapBuilder {
       cnt++;
     }
     log(MSG_INFO_FOUND, cnt);
-    return cnt;
+    return this;
   }
 
-  private int parseNss() throws IOException {
+  public CipherMapBuilder fetchNss() throws IOException {
     int cnt = 0;
     log(MSG_INFO_FETCHING, "NSS", NSS_URL);
     Matcher sources = REGEX_NSS.matcher(Downloader.get(NSS_URL));
@@ -175,10 +188,10 @@ public class CipherMapBuilder {
       cnt++;
     }
     log(MSG_INFO_FOUND, cnt);
-    return cnt;
+    return this;
   }
 
-  private int parseOpenSsl() throws IOException {
+  public CipherMapBuilder fetchOpenSsl() throws IOException {
     int cnt = 0;
     log(MSG_INFO_FETCHING, "OpenSSL", NSS_URL);
     String content = Downloader.get(OPENSSL_URL);
@@ -209,10 +222,10 @@ public class CipherMapBuilder {
       cnt++;
     }
     log(MSG_INFO_FOUND, cnt);
-    return cnt;
+    return this;
   }
 
-  private int parseGnuTls() throws IOException {
+  public CipherMapBuilder fetchGnuTls() throws IOException {
     int cnt = 0;
     log(MSG_INFO_FETCHING, "GnuTLS", NSS_URL);
     Matcher sources = REGEX_GNUTLS_NAMES.matcher(Downloader.get(GNUTLS_URL));
@@ -230,7 +243,7 @@ public class CipherMapBuilder {
       cnt++;
     }
     log(MSG_INFO_FOUND, cnt);
-    return cnt;
+    return this;
   }
 
   private static String format(String key, Object[] params) {
