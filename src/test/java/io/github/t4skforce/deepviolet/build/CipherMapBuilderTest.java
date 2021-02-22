@@ -33,7 +33,7 @@ class CipherMapBuilderTest {
       mock.when(() -> Downloader.get(eq(CipherMapBuilder.NSS_URL))).thenReturn(StringUtils.EMPTY);
       
       // fall back to local resource version if nothing can be fetched
-      assertTrue(CipherMapBuilder.builder().fetch().build().keySet().equals(CipherMapBuilder.builder().build().keySet())); 
+      assertEquals(CipherMapBuilder.builder().fetch().build().keySet(),CipherMapBuilder.builder().build().keySet()); 
     }
   }
   
