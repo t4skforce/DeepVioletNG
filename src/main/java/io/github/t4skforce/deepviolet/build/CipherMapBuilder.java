@@ -30,13 +30,17 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class CipherMapBuilder {
 
-  private static final String IANA_URL = "http://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml";
-  private static final String NSS_URL = "https://hg.mozilla.org/projects/nss/raw-file/tip/lib/ssl/sslproto.h";
-  private static final String OPENSSL_URL = "https://raw.githubusercontent.com/openssl/openssl/master/include/openssl/tls1.h";
-  private static final String GNUTLS_URL = "https://gitlab.com/gnutls/gnutls/raw/master/lib/algorithms/ciphersuites.c";
-
   private static final String BASE_KEY = "cypher.builder";
+  private static final String MSG_WARN_NOT_IANA = "warn.not.iana";
+  private static final String MSG_INFO_FOUND = "info.found";
+  private static final String MSG_INFO_FETCHING = "info.fetching";
+
   private static final String CIPHERMAP_JSON = "ciphermap.json";
+
+  protected static final String IANA_URL = "http://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml";
+  protected static final String NSS_URL = "https://hg.mozilla.org/projects/nss/raw-file/tip/lib/ssl/sslproto.h";
+  protected static final String OPENSSL_URL = "https://raw.githubusercontent.com/openssl/openssl/master/include/openssl/tls1.h";
+  protected static final String GNUTLS_URL = "https://gitlab.com/gnutls/gnutls/raw/master/lib/algorithms/ciphersuites.c";
 
   private static final Pattern REGEX_IANA = Pattern.compile(
       "<td[^>]*>(?<hex>0x[0-9|A-F]{2},0x[0-9|A-F]{2})</td[^>]*>[^<]*<td[^>]*>(?<name>TLS_[^\\s]+)</td[^>]*>",
@@ -82,7 +86,7 @@ public class CipherMapBuilder {
     return new CipherMapBuilder();
   }
 
-  public CipherMapBuilder build() throws IOException {
+  public CipherMapBuilder fetch() throws IOException {
     parseIana();
     parseNss();
     parseOpenSsl();
@@ -91,26 +95,24 @@ public class CipherMapBuilder {
   }
 
   public CipherMapBuilder write(File target) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.configure(MapperFeature.USE_ANNOTATIONS, true);
     ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
     writer.writeValue(target, cipherMapJson);
     return this;
   }
 
-  public CipherMapJson get() throws IOException {
+  public CipherMapJson build() throws IOException {
     if (MapUtils.isEmpty(cipherMapJson)) {
-      cipherMapJson = get(CIPHERMAP_JSON);
+      cipherMapJson = build(CIPHERMAP_JSON);
     }
     return cipherMapJson;
   }
 
-  public CipherMapJson get(File file) throws IOException {
+  public CipherMapJson build(File file) throws IOException {
     cipherMapJson = mapper.readValue(file, CipherMapJson.class);
     return cipherMapJson;
   }
 
-  public CipherMapJson get(String resourceName) throws IOException {
+  public CipherMapJson build(String resourceName) throws IOException {
     String json = Resources.toString(Resources.getResource(resourceName), StandardCharsets.UTF_8);
     cipherMapJson = mapper.readValue(json, CipherMapJson.class);
     return cipherMapJson;
@@ -136,15 +138,14 @@ public class CipherMapBuilder {
 
   private int parseIana() throws IOException {
     int cnt = 0;
-    log("info.fetching", "IANA", IANA_URL);
+    log(MSG_INFO_FETCHING, "IANA", IANA_URL);
     Matcher sources = REGEX_IANA.matcher(Downloader.get(IANA_URL));
     while (sources.find()) {
-      String hex = sources.group("hex").trim().toUpperCase().replaceAll("X", "x");
+      String hex = sources.group("hex").trim().toUpperCase().replace("X", "x");
       String name = sources.group("name").trim().toUpperCase();
 
-      if (!cipherMapJson.containsKey(hex)) {
-        cipherMapJson.put(hex, new CipherMapClassificationsJson());
-      }
+      cipherMapJson.computeIfAbsent(hex, k -> new CipherMapClassificationsJson());
+
       CipherMapClassificationsJson cipher = cipherMapJson.get(hex);
       cipher.setIana(name);
 
@@ -152,20 +153,20 @@ public class CipherMapBuilder {
       ianaNameMap.put(name, hex);
       cnt++;
     }
-    log("info.found", cnt);
+    log(MSG_INFO_FOUND, cnt);
     return cnt;
   }
 
   private int parseNss() throws IOException {
     int cnt = 0;
-    log("info.fetching", "NSS", NSS_URL);
+    log(MSG_INFO_FETCHING, "NSS", NSS_URL);
     Matcher sources = REGEX_NSS.matcher(Downloader.get(NSS_URL));
     while (sources.find()) {
-      String hex = sources.group("hex").trim().toUpperCase().replaceAll("X", "x");
+      String hex = sources.group("hex").trim().toUpperCase().replace("X", "x");
       hex = String.format("%s,0x%s", hex.substring(0, 4), hex.substring(4, 6));
       String name = sources.group("name").trim().toUpperCase();
       if (!cipherMapJson.containsKey(hex)) {
-        warn("warn.not.iana", "NSS", hex, name);
+        warn(MSG_WARN_NOT_IANA, "NSS", hex, name);
         continue;
       }
       CipherMapClassificationsJson cipher = cipherMapJson.get(hex);
@@ -173,13 +174,13 @@ public class CipherMapBuilder {
 
       cnt++;
     }
-    log("info.found", cnt);
+    log(MSG_INFO_FOUND, cnt);
     return cnt;
   }
 
   private int parseOpenSsl() throws IOException {
     int cnt = 0;
-    log("info.fetching", "OpenSSL", NSS_URL);
+    log(MSG_INFO_FETCHING, "OpenSSL", NSS_URL);
     String content = Downloader.get(OPENSSL_URL);
 
     // mapping e.g., ECDHE_RSA_WITH_AES_128_GCM_SHA256 ->
@@ -196,24 +197,24 @@ public class CipherMapBuilder {
     while (sources.find()) {
       String name = sources.group("name").trim().toUpperCase();
       name = mapping.get(name);
-      String hex = sources.group("hex").trim().toUpperCase().replaceAll("X", "x");
+      String hex = sources.group("hex").trim().toUpperCase().replace("X", "x");
       hex = String.format("0x%s,0x%s", hex.substring(6, 8), hex.substring(8, 10));
 
       if (!cipherMapJson.containsKey(hex)) {
-        warn("warn.not.iana", "NSS", hex, name);
+        warn(MSG_WARN_NOT_IANA, "OpenSSL", hex, name);
         continue;
       }
       CipherMapClassificationsJson cipher = cipherMapJson.get(hex);
       cipher.setOpenssl(name);
       cnt++;
     }
-    log("info.found", cnt);
+    log(MSG_INFO_FOUND, cnt);
     return cnt;
   }
 
   private int parseGnuTls() throws IOException {
     int cnt = 0;
-    log("info.fetching", "GnuTLS", NSS_URL);
+    log(MSG_INFO_FETCHING, "GnuTLS", NSS_URL);
     Matcher sources = REGEX_GNUTLS_NAMES.matcher(Downloader.get(GNUTLS_URL));
     while (sources.find()) {
       String hex = String.format("%s,%s",
@@ -221,19 +222,19 @@ public class CipherMapBuilder {
           sources.group("hex2").trim().toUpperCase().replace("X", "x"));
       String name = sources.group("name").trim().toUpperCase();
       if (!cipherMapJson.containsKey(hex)) {
-        warn("warn.not.iana", "NSS", hex, name);
+        warn(MSG_WARN_NOT_IANA, "GnuTLS", hex, name);
         continue;
       }
       CipherMapClassificationsJson cipher = cipherMapJson.get(hex);
       cipher.setGnutls(name);
       cnt++;
     }
-    log("info.found", cnt);
+    log(MSG_INFO_FOUND, cnt);
     return cnt;
   }
 
   private static String format(String key, Object[] params) {
-    return MessageFormat.format(RES_BUNDLE.getString(key).replaceAll("'", "''"), params);
+    return MessageFormat.format(RES_BUNDLE.getString(key).replace("'", "''"), params);
   }
 
   @FunctionalInterface
@@ -247,6 +248,6 @@ public class CipherMapBuilder {
       System.out.println("[INFO] " + format(key, params));
     }).warn((key, params) -> {
       System.out.println("[WARNING] " + format(key, params));
-    }).build().write(Paths.get(args[0], CIPHERMAP_JSON).toFile());
+    }).fetch().write(Paths.get(args[0], CIPHERMAP_JSON).toFile());
   }
 }
