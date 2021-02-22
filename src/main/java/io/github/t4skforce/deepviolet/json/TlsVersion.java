@@ -60,9 +60,8 @@ public class TlsVersion {
       }
       Matcher tlsm = TLS_REGEX.matcher(name);
       if (tlsm.matches()) {
-        return of(0x0301 + Integer.valueOf(tlsm.group(1)));
+        return of(0x0301 + Integer.parseInt(tlsm.group(1), 10));
       }
-
     }
     return new TlsVersion(UNKNOWN, "UNKNOWN_NAME:" + name);
   }
