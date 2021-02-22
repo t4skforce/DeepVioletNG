@@ -1,0 +1,9 @@
+{
+	"0x00,0x6C": {
+		"GnuTLS": "TLS_DH_ANON_AES_128_CBC_SHA256",
+		"NSS": null,
+		"IANA": "TLS_DH_ANON_WITH_AES_128_CBC_SHA256",
+		"OpenSSL": "ADH-AES128-SHA256",
+		"compatibility": null
+	}
+}

@@ -1,0 +1,509 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:iana="http://www.iana.org/assignments">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ASCII" />
+    <link rel="stylesheet" href="../_support/iana-registry.css" type="text/css" />
+    <script type="text/javascript" src="../_support/jquery.js"></script>
+    <script type="text/javascript" src="../_support/sort.js"></script>
+    <title>Transport Layer Security (TLS) Parameters</title>
+  </head>
+  <body>
+    <h1>Transport Layer Security (TLS) Parameters</h1>
+    <dl>
+      <dt>Created</dt>
+      <dd>2005-08-23</dd>
+      <dt>Last Updated</dt>
+      <dd>2021-01-27</dd>
+      <dt>Available Formats</dt>
+      <dd>
+        <a class="altformat" href="tls-parameters.xml"><img src="/_img/icons/text-xml.png" /><br />XML</a>
+        <a class="altformat" href="tls-parameters.xhtml"><img src="/_img/icons/text-html.png" /><br />HTML</a>
+        <a class="altformat" href="tls-parameters.txt"><img src="/_img/icons/text-plain.png" /><br />Plain text</a>
+      </dd>
+    </dl>
+    <p>
+      <b>Registries included below</b>
+    </p>
+    <ul>
+      <li>
+        <a href="#tls-parameters-2">TLS ClientCertificateType Identifiers</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-4">TLS Cipher Suites</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-5">TLS ContentType</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-6">TLS Alerts</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-7">TLS HandshakeType</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-8">TLS Supported Groups</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-9">TLS EC Point Formats</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-10">TLS EC Curve Types</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-12">TLS Supplemental Data Formats (SupplementalDataType)</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-14">TLS UserMappingType Values</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-16">TLS SignatureAlgorithm</a>
+      </li>
+      <li>
+        <a href="#tls-parameters-18">TLS HashAlgorithm</a>
+      </li>
+      <li>
+        <a href="#exporter-labels">TLS Exporter Labels</a>
+      </li>
+      <li>
+        <a href="#authorization-data">TLS Authorization Data Formats</a>
+      </li>
+      <li>
+        <a href="#heartbeat-message-types">TLS Heartbeat Message Types</a>
+      </li>
+      <li>
+        <a href="#heartbeat-modes">TLS Heartbeat Modes</a>
+      </li>
+      <li>
+        <a href="#tls-signaturescheme">TLS SignatureScheme</a>
+      </li>
+      <li>
+        <a href="#tls-pskkeyexchangemode">TLS PskKeyExchangeMode</a>
+      </li>
+    </ul>
+    <h2><a name="tls-parameters-2" id="tls-parameters-2"></a>TLS ClientCertificateType Identifiers</h2>
+    <dl>
+      <dt>Expert(s)</dt>
+      <dd>
+        <pre>Yoav Nir, Rich Salz, Nick Sullivan</pre>
+      </dd>
+      <dt>Reference</dt>
+      <dd>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>][<a href="https://www.iana.org/go/rfc8447">RFC8447</a>]</dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>Requests for assignments from the registry's Specification 
+Required range should be sent to the mailing list described in 
+[<a href="https://www.iana.org/go/rfc8447">RFC 8447, Section 17</a>].
+    </pre>
+      </dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>The role of the designated expert is described in [<a href="https://www.iana.org/go/rfc8447">RFC8447</a>].
+The designated expert [<a href="https://www.iana.org/go/rfc8126">RFC8126</a>] ensures that the specification is
+publicly available.  It is sufficient to have an Internet-Draft
+(that is posted and never published as an RFC) or a document from
+another standards body, industry consortium, university site, etc.
+The expert may provide more in-depth reviews, but their approval
+should not be taken as an endorsement of the identifier.
+    </pre>
+      </dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>As specified in [<a href="https://www.iana.org/go/rfc8126">RFC8126</a>], assignments made in the Private Use
+space are not generally useful for broad interoperability.  It is
+the responsibility of those making use of the Private Use range to
+ensure that no conflicts occur (within the intended scope of use).
+For widespread experiments, temporary reservations are available.
+    </pre>
+      </dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>The values in this registry are only applicable to (D)TLS
+protocol versions prior to 1.3.
+    </pre>
+      </dd>
+      <dt>Available Formats</dt>
+      <dd>
+        <a class="altformat" href="tls-parameters-2.csv"><img src="/_img/icons/text-csv.png" /><br />CSV</a>
+      </dd>
+    </dl>
+    <table class="sortable" id="table-tls-parameters-2-range">
+      <thead>
+        <tr>
+          <th>Range</th>
+          <th>Registration Procedures</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0-63</td>
+          <td>Standards Action</td>
+        </tr>
+        <tr>
+          <td>64-223</td>
+          <td>Specification Required</td>
+        </tr>
+        <tr>
+          <td>224-255</td>
+          <td>Reserved for Private Use</td>
+        </tr>
+      </tbody>
+    </table>
+    <table id="table-tls-parameters-2" class="sortable">
+      <thead>
+        <tr>
+          <th>Value</th>
+          <th>Description</th>
+          <th>DTLS-OK</th>
+          <th>Reference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="center">0</td>
+          <td>Unassigned</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td align="center">1</td>
+          <td>rsa_sign</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">2</td>
+          <td>dss_sign</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">3</td>
+          <td>rsa_fixed_dh</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">4</td>
+          <td>dss_fixed_dh</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">5</td>
+          <td>rsa_ephemeral_dh_RESERVED</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">6</td>
+          <td>dss_ephemeral_dh_RESERVED</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">7-19</td>
+          <td>Unassigned</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td align="center">20</td>
+          <td>fortezza_dms_RESERVED</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">21-63</td>
+          <td>Unassigned</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td align="center">64</td>
+          <td>ecdsa_sign</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc8422">RFC8422</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">65</td>
+          <td>rsa_fixed_ecdh</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc8422">RFC8422</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">66</td>
+          <td>ecdsa_fixed_ecdh</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc8422">RFC8422</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">67</td>
+          <td>gost_sign256</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/draft-smyshlyaev-tls12-gost-suites">draft-smyshlyaev-tls12-gost-suites</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">68</td>
+          <td>gost_sign512</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/draft-smyshlyaev-tls12-gost-suites">draft-smyshlyaev-tls12-gost-suites</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">69-223</td>
+          <td>Unassigned</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td align="center">224-255</td>
+          <td>Reserved for Private Use</td>
+          <td></td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2><a name="tls-parameters-4" id="tls-parameters-4"></a>TLS Cipher Suites</h2>
+    <dl>
+      <dt>Registration Procedure(s)</dt>
+      <dd>
+        <pre>Specification Required</pre>
+      </dd>
+      <dt>Expert(s)</dt>
+      <dd>
+        <pre>Yoav Nir, Rich Salz, Nick Sullivan</pre>
+      </dd>
+      <dt>Reference</dt>
+      <dd>[<a href="https://www.iana.org/go/rfc8446">RFC8446</a>][<a href="https://www.iana.org/go/rfc8447">RFC8447</a>]</dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>Registration requests should be sent to the mailing list 
+described in [<a href="https://www.iana.org/go/rfc8447">RFC 8447, Section 17</a>].
+    </pre>
+      </dd>
+      <dt>WARNING</dt>
+      <dd>
+        <pre>Cryptographic algorithms and parameters will be broken or
+weakened over time.  Blindly implementing cipher suites listed here 
+is not advised.  Implementers and users need to check that the 
+cryptographic algorithms listed continue to provide the expected 
+level of security.
+    </pre>
+      </dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>Although TLS 1.3 uses the same cipher suite space as previous
+versions of TLS, TLS 1.3 cipher suites are defined differently,
+only specifying the symmetric ciphers and hash function, and
+cannot be used for TLS 1.2.  Similarly, TLS 1.2 and lower cipher
+suite values cannot be used with TLS 1.3.
+    </pre>
+      </dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>CCM_8 cipher suites are not marked as "Recommended".  These
+cipher suites have a significantly truncated authentication tag
+that represents a security trade-off that may not be appropriate
+for general environments.
+    </pre>
+      </dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>If an item is not marked as "Recommended", it does not
+necessarily mean that it is flawed; rather, it indicates that
+the item either has not been through the IETF consensus process,
+has limited applicability, or is intended only for specific use
+cases.
+    </pre>
+      </dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>The role of the designated expert is described in [<a href="https://www.iana.org/go/rfc8447">RFC8447</a>].
+The designated expert [<a href="https://www.iana.org/go/rfc8126">RFC8126</a>] ensures that the specification is
+publicly available.  It is sufficient to have an Internet-Draft
+(that is posted and never published as an RFC) or a document from
+another standards body, industry consortium, university site, etc.
+The expert may provide more in-depth reviews, but their approval
+should not be taken as an endorsement of the cipher suite.
+    </pre>
+      </dd>
+      <dt>Note</dt>
+      <dd>
+        <pre>As specified in [<a href="https://www.iana.org/go/rfc8126">RFC8126</a>], assignments made in the Private Use
+space are not generally useful for broad interoperability.  It is
+the responsibility of those making use of the Private Use range to
+ensure that no conflicts occur (within the intended scope of use).
+For widespread experiments, temporary reservations are available.
+    </pre>
+      </dd>
+      <dt>Available Formats</dt>
+      <dd>
+        <a class="altformat" href="tls-parameters-4.csv"><img src="/_img/icons/text-csv.png" /><br />CSV</a>
+      </dd>
+    </dl>
+    <table id="table-tls-parameters-4" class="sortable">
+      <thead>
+        <tr>
+          <th>Value</th>
+          <th>Description</th>
+          <th>DTLS-OK</th>
+          <th>Recommended</th>
+          <th>Reference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="center" style="font-family:monospace">0x00,0x6C</td>
+          <td>TLS_DH_anon_WITH_AES_128_CBC_SHA256</td>
+          <td>Y</td>
+          <td>N</td>
+          <td>[<a href="https://www.iana.org/go/rfc5246">RFC5246</a>]</td>
+        </tr>
+        <tr>
+          <td align="center" style="font-family:monospace">0x00,0x6E-83</td>
+          <td>Unassigned</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2><a name="tls-parameters-5" id="tls-parameters-5"></a>TLS ContentType</h2>
+    <dl>
+      <dt>Registration Procedure(s)</dt>
+      <dd>
+        <pre>Standards Action</pre>
+      </dd>
+      <dt>Reference</dt>
+      <dd>[<a href="https://www.iana.org/go/rfc8446">RFC8446</a>][<a href="https://www.iana.org/go/rfc7983">RFC7983</a>]</dd>
+      <dt>Available Formats</dt>
+      <dd>
+        <a class="altformat" href="tls-parameters-5.csv"><img src="/_img/icons/text-csv.png" /><br />CSV</a>
+      </dd>
+    </dl>
+    <table id="table-tls-parameters-5" class="sortable">
+      <thead>
+        <tr>
+          <th>Value</th>
+          <th>Description</th>
+          <th>DTLS-OK</th>
+          <th>Reference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="center">0-19</td>
+          <td>Unassigned (Requires coordination; see 
+        [<a href="https://www.iana.org/go/rfc7983">RFC7983</a>])</td>
+          <td></td>
+          <td>[<a href="https://www.iana.org/go/rfc5764">RFC5764</a>][<a href="https://www.iana.org/go/rfc7983">RFC7983</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">20</td>
+          <td>change_cipher_spec</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc8446">RFC8446</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">21</td>
+          <td>alert</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc8446">RFC8446</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">22</td>
+          <td>handshake</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc8446">RFC8446</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">23</td>
+          <td>application_data</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc8446">RFC8446</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">24</td>
+          <td>heartbeat</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/rfc6520">RFC6520</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">25</td>
+          <td>tls12_cid (TEMPORARY - registered 2019-07-02, extension registered 2020-07-28, expires 2021-07-02)</td>
+          <td>Y</td>
+          <td>[<a href="https://www.iana.org/go/draft-ietf-tls-dtls-connection-id">draft-ietf-tls-dtls-connection-id</a>]</td>
+        </tr>
+        <tr>
+          <td align="center">26-63</td>
+          <td>Unassigned</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td align="center">64-255</td>
+          <td>Unassigned (Requires coordination; see 
+        [<a href="https://www.iana.org/go/rfc7983">RFC7983</a>])</td>
+          <td></td>
+          <td>[<a href="https://www.iana.org/go/rfc5764">RFC5764</a>][<a href="https://www.iana.org/go/rfc7983">RFC7983</a>]</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2><a name="tls-parameters-6" id="tls-parameters-6"></a>TLS Alerts</h2>
+    <dl>
+      <dt>Registration Procedure(s)</dt>
+      <dd>
+        <pre>Standards Action</pre>
+      </dd>
+      <dt>Reference</dt>
+      <dd>[<a href="https://www.iana.org/go/rfc8446">RFC8446</a>]</dd>
+      <dt>Available Formats</dt>
+      <dd>
+        <a class="altformat" href="tls-parameters-6.csv"><img src="/_img/icons/text-csv.png" /><br />CSV</a>
+      </dd>
+    </dl>
+    <h1 class="people">Contact Information</h1>
+    <table class="sortable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Contact URI</th>
+          <th>Last Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <a name="Miguel_Angel_Reina_Ortega" id="Miguel_Angel_Reina_Ortega">[Miguel_Angel_Reina_Ortega]</a>
+          </td>
+          <td>Miguel Angel Reina Ortega</td>
+          <td>
+            <a href="mailto:MiguelAngel.ReinaOrtega&amp;etsi.org">mailto:MiguelAngel.ReinaOrtega&amp;etsi.org</a>
+          </td>
+          <td>2018-02-16</td>
+        </tr>
+        <tr>
+          <td>
+            <a name="Pasi_Eronen" id="Pasi_Eronen">[Pasi_Eronen]</a>
+          </td>
+          <td>Pasi Eronen</td>
+          <td>
+            <a href="mailto:pasi.eronen&amp;nokia.com">mailto:pasi.eronen&amp;nokia.com</a>
+          </td>
+          <td>2008-04-04</td>
+        </tr>
+        <tr>
+          <td>
+            <a name="Silke_Holtmanns" id="Silke_Holtmanns">[Silke_Holtmanns]</a>
+          </td>
+          <td>Silke Holtmanns</td>
+          <td>
+            <a href="mailto:Silke.Holtmanns&amp;nokia.com">mailto:Silke.Holtmanns&amp;nokia.com</a>
+          </td>
+          <td>2013-01-30</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
