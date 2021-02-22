@@ -20,12 +20,27 @@ class TlsVersionTest {
   @Test
   void tlsVersionOfStringTest() {
     assertEquals("TLSv1.0", TlsVersion.of("TLSv1").getName());
+
     assertEquals("TLSv1.1", TlsVersion.of("TLSv1.1").getName());
+
     assertEquals("TLSv1.9", TlsVersion.of("TLSv1.9").getName());
+
+    assertEquals("UNKNOWN_NAME:TLSv1.10", TlsVersion.of("TLSv1.10").getName());
+
+    assertEquals("UNKNOWN_NAME:TLSv1." + Integer.MAX_VALUE,
+        TlsVersion.of("TLSv1." + Integer.MAX_VALUE).getName());
+
+    assertEquals("UNKNOWN_NAME:TLSv1." + Long.MAX_VALUE,
+        TlsVersion.of("TLSv1." + Long.MAX_VALUE).getName());
+
     assertEquals("SSLv2", TlsVersion.of("SSLv2").getName());
+
     assertEquals("SSLv3", TlsVersion.of("SSLv3").getName());
+
     assertEquals("UNKNOWN_NAME:UNKNOWN", TlsVersion.of("UNKNOWN").getName());
+
     assertEquals("UNKNOWN_NAME:null", TlsVersion.of(null).getName());
+
     assertEquals("UNKNOWN_NAME:", TlsVersion.of("").getName());
   }
 
@@ -42,7 +57,7 @@ class TlsVersionTest {
     assertEquals(TlsVersion.of(TlsVersion.TLS_V1_1), TlsVersion.of("TLSv1.1"));
     assertNotEquals(TlsVersion.of(TlsVersion.TLS_V1_1), TlsVersion.of("TLSv1.2"));
     assertNotEquals(null, TlsVersion.of(TlsVersion.TLS_V1_1));
-    assertFalse(TlsVersion.of(TlsVersion.TLS_V1_1).equals(null));
+    assertFalse(TlsVersion.of(TlsVersion.TLS_V1_1).equals(Integer.valueOf(1)));
   }
 
   @Test

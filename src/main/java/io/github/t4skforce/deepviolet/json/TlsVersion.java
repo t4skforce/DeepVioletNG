@@ -61,7 +61,7 @@ public class TlsVersion {
       Matcher tlsm = TLS_REGEX.matcher(name);
       if (tlsm.matches()) {
         try {
-          return of(0x0301 + Integer.parseInt(tlsm.group(1)));
+          return of(0x0301 + Integer.parseInt(tlsm.group(1), 10));
         } catch (NumberFormatException e) {
           // should not be possible based on regex
         }
