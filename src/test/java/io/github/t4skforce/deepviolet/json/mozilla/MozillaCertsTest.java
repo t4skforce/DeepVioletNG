@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 
 
-public class MozillaCertsTest {
+class MozillaCertsTest {
   private ObjectMapper objectMapper;
 
   @BeforeEach
