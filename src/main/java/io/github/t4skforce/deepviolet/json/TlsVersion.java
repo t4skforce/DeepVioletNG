@@ -1,6 +1,7 @@
 package io.github.t4skforce.deepviolet.json;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -81,6 +82,8 @@ public class TlsVersion {
       tv = new TlsVersion(version, SS_LV2);
     } else if (version == SSL_V3) {
       tv = new TlsVersion(version, SS_LV3);
+    } else if (version == TLS_V1) {
+      tv = new TlsVersion(version, "TLSv1");
     } else if (version >>> 8 == 0x03) {
       tv = new TlsVersion(version, "TLSv1." + ((version & 0xFF) - 1));
     } else {

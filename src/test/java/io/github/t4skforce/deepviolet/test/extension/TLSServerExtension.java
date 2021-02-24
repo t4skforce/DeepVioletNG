@@ -1,12 +1,17 @@
 package io.github.t4skforce.deepviolet.test.extension;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-public class WebServerExtension implements BeforeAllCallback, AfterAllCallback {
+public class TLSServerExtension implements BeforeAllCallback, AfterAllCallback {
 
-  private WebServerExtension() {
+  private ExecutorService serverExecutor = Executors.newFixedThreadPool(10);
+
+  private TLSServerExtension() {
   }
 
   public static Builder builder() {
@@ -19,21 +24,25 @@ public class WebServerExtension implements BeforeAllCallback, AfterAllCallback {
       return this;
     }
 
-    public WebServerExtension build() {
-      return new WebServerExtension();
+    public TLSServerExtension build() {
+      return new TLSServerExtension();
     }
+
+  }
+
+  private void serve() {
 
   }
 
   @Override
   public void afterAll(ExtensionContext context) throws Exception {
-    // TODO Auto-generated method stub
-
+    if (!serverExecutor.isShutdown() && !serverExecutor.isTerminated()) {
+      serverExecutor.shutdownNow();
+    }
   }
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
