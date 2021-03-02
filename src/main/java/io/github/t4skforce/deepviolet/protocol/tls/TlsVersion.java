@@ -1,4 +1,4 @@
-package io.github.t4skforce.deepviolet.json;
+package io.github.t4skforce.deepviolet.protocol.tls;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

@@ -1,7 +1,9 @@
 package io.github.t4skforce.deepviolet.json.mozilla;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.t4skforce.deepviolet.json.TlsVersion;
+
+import io.github.t4skforce.deepviolet.protocol.tls.TlsVersion;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;

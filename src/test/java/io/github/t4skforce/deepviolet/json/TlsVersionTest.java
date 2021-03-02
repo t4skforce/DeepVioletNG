@@ -3,6 +3,8 @@ package io.github.t4skforce.deepviolet.json;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import io.github.t4skforce.deepviolet.protocol.tls.TlsVersion;
+
 import org.junit.jupiter.api.Test;
 
 class TlsVersionTest {

@@ -1,6 +1,6 @@
 package io.github.t4skforce.deepviolet.protocol.tls.message;
 
-import io.github.t4skforce.deepviolet.json.TlsVersion;
+import io.github.t4skforce.deepviolet.protocol.tls.TlsVersion;
 import io.github.t4skforce.deepviolet.protocol.tls.cipher.TlsCypherSuite;
 import io.github.t4skforce.deepviolet.protocol.tls.compression.TlsCompressionMethod;
 import io.github.t4skforce.deepviolet.protocol.tls.exception.TlsProtocolException;
