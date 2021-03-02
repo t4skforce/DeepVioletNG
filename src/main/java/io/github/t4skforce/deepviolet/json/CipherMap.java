@@ -17,14 +17,17 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
-public class CipherMap extends HashMap<String, CipherMapClassificationsJson> {
+public class CipherMap extends ConcurrentHashMap<String, CipherMapClassificationsJson> {
   private static final long serialVersionUID = 5660722767135755938L;
+
+  private static CipherMap instance;
 
   public CipherMap() {
     super();
@@ -32,6 +35,13 @@ public class CipherMap extends HashMap<String, CipherMapClassificationsJson> {
 
   public CipherMap(String hexName, CipherMapClassificationsJson clazz) {
     put(hexName, clazz);
+  }
+
+  public static synchronized CipherMap getInstance() throws IOException {
+    if (CipherMap.instance == null) {
+      CipherMap.instance = builder().load().build();
+    }
+    return CipherMap.instance;
   }
 
   public static Builder builder() {
@@ -248,6 +258,22 @@ public class CipherMap extends HashMap<String, CipherMapClassificationsJson> {
     public static String format(String key, Object[] params) {
       return MessageFormat.format(RES_BUNDLE.getString(key).replace("'", "''"), params);
     }
+  }
+
+  public CipherMapClassificationsJson get(byte[] c) {
+    return get(c[0], c[1]);
+  }
+
+  public CipherMapClassificationsJson get(byte c1, byte c2) {
+    return get(String.format("0x%02X", c1) + "," + String.format("0x%02X", c2));
+  }
+
+  public boolean containsKey(byte[] c) {
+    return containsKey(c[0], c[1]);
+  }
+
+  public boolean containsKey(byte c1, byte c2) {
+    return containsKey(String.format("0x%02X", c1) + "," + String.format("0x%02X", c2));
   }
 
   @SuppressWarnings("all")

@@ -2,6 +2,8 @@ package io.github.t4skforce.deepviolet.json;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import io.github.t4skforce.deepviolet.protocol.tls.util.TlsUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -9,16 +11,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TlsVersion {
-  private static final String TL_SV1 = "TLSv1";
-  private static final String SS_LV3 = "SSLv3";
-  private static final String SS_LV2 = "SSLv2";
-  public static final int UNKNOWN = 0xFFFF;
-  public static final int SSL_V2 = 0x0200;
-  public static final int SSL_V3 = 0x0300;
-  public static final int TLS_V1 = 0x0301;
-  public static final int TLS_V1_1 = 0x0302;
-  public static final int TLS_V1_2 = 0x0303;
-  public static final int TLS_V1_3 = 0x0304;
+  private static final String STR_TLSV1 = "TLSv1";
+  private static final String STR_SSLV3 = "SSLv3";
+  private static final String STR_SSLV2 = "SSLv2";
+  private static final String STR_TLSV1_1 = "TLSv1.1";
+  private static final String STR_TLSV1_2 = "TLSv1.2";
+  private static final String STR_TLSV1_3 = "TLSv1.3";
+
+  public static final TlsVersion UNKNOWN = new TlsVersion(0xFFFF, "UNKNOWN_VERSION:0xFFFF", true);
+  public static final TlsVersion SSL_V2 = new TlsVersion(0x0200, STR_SSLV2);
+  public static final TlsVersion SSL_V3 = new TlsVersion(0x0300, STR_SSLV3);
+  public static final TlsVersion TLS_V1 = new TlsVersion(0x0301, STR_TLSV1);
+  public static final TlsVersion TLS_V1_1 = new TlsVersion(0x0302, STR_TLSV1_1);
+  public static final TlsVersion TLS_V1_2 = new TlsVersion(0x0303, STR_TLSV1_2);
+  public static final TlsVersion TLS_V1_3 = new TlsVersion(0x0304, STR_TLSV1_3);
 
   private static final Pattern TLS_REGEX = Pattern.compile("^TLSv1.([0-9])$",
       Pattern.CASE_INSENSITIVE);
@@ -26,21 +32,35 @@ public class TlsVersion {
   private static final Map<Integer, TlsVersion> VERSIONS = new HashMap<>();
 
   static {
-    VERSIONS.put(UNKNOWN, of(UNKNOWN));
-    VERSIONS.put(SSL_V2, of(SSL_V2));
-    VERSIONS.put(SSL_V3, of(SSL_V3));
-    VERSIONS.put(TLS_V1, of(TLS_V1));
-    VERSIONS.put(TLS_V1_1, of(TLS_V1_1));
-    VERSIONS.put(TLS_V1_2, of(TLS_V1_2));
-    VERSIONS.put(TLS_V1_3, of(TLS_V1_3));
+    VERSIONS.put(UNKNOWN.getVersion(), UNKNOWN);
+    VERSIONS.put(SSL_V2.getVersion(), SSL_V2);
+    VERSIONS.put(SSL_V3.getVersion(), SSL_V3);
+    VERSIONS.put(TLS_V1.getVersion(), TLS_V1);
+    VERSIONS.put(TLS_V1_1.getVersion(), TLS_V1_1);
+    VERSIONS.put(TLS_V1_2.getVersion(), TLS_V1_2);
+    VERSIONS.put(TLS_V1_3.getVersion(), TLS_V1_3);
   }
 
   private Integer version;
   private String name;
+  private boolean unknown;
 
   private TlsVersion(int version, String name) {
+    this(version, name, false);
+  }
+
+  private TlsVersion(int version, String name, boolean unknown) {
     this.version = version;
     this.name = name;
+    this.unknown = unknown;
+  }
+
+  public Integer getVersion() {
+    return version;
+  }
+
+  public String getName() {
+    return name;
   }
 
   /**
@@ -52,19 +72,19 @@ public class TlsVersion {
   @JsonCreator
   public static TlsVersion of(String name) {
     if (name != null) {
-      if (name.equalsIgnoreCase(SS_LV2)) {
-        return of(SSL_V2);
-      } else if (name.equalsIgnoreCase(SS_LV3)) {
-        return of(SSL_V3);
-      } else if (name.equalsIgnoreCase(TL_SV1)) {
-        return of(TLS_V1);
+      if (name.equalsIgnoreCase(STR_SSLV2)) {
+        return SSL_V2;
+      } else if (name.equalsIgnoreCase(STR_SSLV3)) {
+        return SSL_V3;
+      } else if (name.equalsIgnoreCase(STR_TLSV1)) {
+        return TLS_V1;
       }
       Matcher tlsm = TLS_REGEX.matcher(name);
       if (tlsm.matches()) {
         return of(0x0301 + Integer.parseInt(tlsm.group(1), 10));
       }
     }
-    return new TlsVersion(UNKNOWN, "UNKNOWN_NAME:" + name);
+    return UNKNOWN;
   }
 
   /**
@@ -74,31 +94,20 @@ public class TlsVersion {
    * @return
    */
   public static TlsVersion of(int version) {
-    TlsVersion tv;
-    if (VERSIONS.containsKey(version)) {
-      return VERSIONS.get(version);
-    }
-    if (version == SSL_V2) {
-      tv = new TlsVersion(version, SS_LV2);
-    } else if (version == SSL_V3) {
-      tv = new TlsVersion(version, SS_LV3);
-    } else if (version == TLS_V1) {
-      tv = new TlsVersion(version, "TLSv1");
-    } else if (version >>> 8 == 0x03) {
-      tv = new TlsVersion(version, "TLSv1." + ((version & 0xFF) - 1));
-    } else {
-      tv = new TlsVersion(version, String.format("UNKNOWN_VERSION:0x%04X", version));
-    }
-    VERSIONS.put(version, tv);
-    return tv;
+    return VERSIONS.computeIfAbsent(version, k -> {
+      if (k >>> 8 == 0x03) {
+        return new TlsVersion(version, "TLSv1." + ((k & 0xFF) - 1));
+      }
+      return new TlsVersion(version, String.format("UNKNOWN_VERSION:0x%04X", k), true);
+    });
   }
 
-  public Integer getVersion() {
-    return version;
+  public byte[] getBytes() {
+    return TlsUtils.enc16be(version, new byte[2]);
   }
 
-  public String getName() {
-    return name;
+  public static TlsVersion of(byte[] data) {
+    return of(((data[1] & 0xFF) << 8) | (data[2] & 0xFF));
   }
 
   @Override
