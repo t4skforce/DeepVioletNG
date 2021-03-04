@@ -16,103 +16,62 @@ public class TlsExtensionType {
   private static final String RESERVED = "reserved";
 
   public static final TlsExtensionType SERVER_NAME = new TlsExtensionType(0, "server_name", true);
-  public static final TlsExtensionType MAX_FRAGMENT_LENGTH = new TlsExtensionType(1,
-      "max_fragment_length", false);
-  public static final TlsExtensionType CLIENT_CERTIFICATE_URL = new TlsExtensionType(2,
-      "client_certificate_url", true);
-  public static final TlsExtensionType TRUSTED_CA_KEYS = new TlsExtensionType(3, "trusted_ca_keys",
-      true);
-  public static final TlsExtensionType TRUNCATED_HMAC = new TlsExtensionType(4, "truncated_hmac",
-      false);
-  public static final TlsExtensionType STATUS_REQUEST = new TlsExtensionType(5, "status_request",
-      true);
+  public static final TlsExtensionType MAX_FRAGMENT_LENGTH = new TlsExtensionType(1, "max_fragment_length", false);
+  public static final TlsExtensionType CLIENT_CERTIFICATE_URL = new TlsExtensionType(2, "client_certificate_url", true);
+  public static final TlsExtensionType TRUSTED_CA_KEYS = new TlsExtensionType(3, "trusted_ca_keys", true);
+  public static final TlsExtensionType TRUNCATED_HMAC = new TlsExtensionType(4, "truncated_hmac", false);
+  public static final TlsExtensionType STATUS_REQUEST = new TlsExtensionType(5, "status_request", true);
   public static final TlsExtensionType USER_MAPPING = new TlsExtensionType(6, "user_mapping", true);
-  public static final TlsExtensionType CLIENT_AUTHZ = new TlsExtensionType(7, "client_authz",
-      false);
-  public static final TlsExtensionType SERVER_AUTHZ = new TlsExtensionType(8, "server_authz",
-      false);
+  public static final TlsExtensionType CLIENT_AUTHZ = new TlsExtensionType(7, "client_authz", false);
+  public static final TlsExtensionType SERVER_AUTHZ = new TlsExtensionType(8, "server_authz", false);
   public static final TlsExtensionType CERT_TYPE = new TlsExtensionType(9, "cert_type", false);
-  public static final TlsExtensionType SUPPORTED_GROUPS = new TlsExtensionType(10,
-      "supported_groups", true);
-  public static final TlsExtensionType EC_POINT_FORMATS = new TlsExtensionType(11,
-      "ec_point_formats", true);
+  public static final TlsExtensionType SUPPORTED_GROUPS = new TlsExtensionType(10, "supported_groups", true);
+  public static final TlsExtensionType EC_POINT_FORMATS = new TlsExtensionType(11, "ec_point_formats", true);
   public static final TlsExtensionType SRP = new TlsExtensionType(12, "srp", false);
-  public static final TlsExtensionType SIGNATURE_ALGORITHMS = new TlsExtensionType(13,
-      "signature_algorithms", true);
+  public static final TlsExtensionType SIGNATURE_ALGORITHMS = new TlsExtensionType(13, "signature_algorithms", true);
   public static final TlsExtensionType USE_SRTP = new TlsExtensionType(14, "use_srtp", true);
   public static final TlsExtensionType HEARTBEAT = new TlsExtensionType(15, "heartbeat", true);
-  public static final TlsExtensionType APPLICATION_LAYER_PROTOCOL_NEGOTIATION = new TlsExtensionType(
-      16, "application_layer_protocol_negotiation", true);
-  public static final TlsExtensionType STATUS_REQUEST_V2 = new TlsExtensionType(17,
-      "status_request_v2", true);
-  public static final TlsExtensionType SIGNED_CERTIFICATE_TIMESTAMP = new TlsExtensionType(18,
-      "signed_certificate_timestamp", false);
-  public static final TlsExtensionType CLIENT_CERTIFICATE_TYPE = new TlsExtensionType(19,
-      "client_certificate_type", true);
-  public static final TlsExtensionType SERVER_CERTIFICATE_TYPE = new TlsExtensionType(20,
-      "server_certificate_type", true);
+  public static final TlsExtensionType APPLICATION_LAYER_PROTOCOL_NEGOTIATION = new TlsExtensionType(16, "application_layer_protocol_negotiation", true);
+  public static final TlsExtensionType STATUS_REQUEST_V2 = new TlsExtensionType(17, "status_request_v2", true);
+  public static final TlsExtensionType SIGNED_CERTIFICATE_TIMESTAMP = new TlsExtensionType(18, "signed_certificate_timestamp", false);
+  public static final TlsExtensionType CLIENT_CERTIFICATE_TYPE = new TlsExtensionType(19, "client_certificate_type", true);
+  public static final TlsExtensionType SERVER_CERTIFICATE_TYPE = new TlsExtensionType(20, "server_certificate_type", true);
   public static final TlsExtensionType PADDING = new TlsExtensionType(21, "padding", true);
-  public static final TlsExtensionType ENCRYPT_THEN_MAC = new TlsExtensionType(22,
-      "encrypt_then_mac", true);
-  public static final TlsExtensionType EXTENDED_MASTER_SECRET = new TlsExtensionType(23,
-      "extended_master_secret", true);
-  public static final TlsExtensionType TOKEN_BINDING = new TlsExtensionType(24, "token_binding",
-      true);
+  public static final TlsExtensionType ENCRYPT_THEN_MAC = new TlsExtensionType(22, "encrypt_then_mac", true);
+  public static final TlsExtensionType EXTENDED_MASTER_SECRET = new TlsExtensionType(23, "extended_master_secret", true);
+  public static final TlsExtensionType TOKEN_BINDING = new TlsExtensionType(24, "token_binding", true);
   public static final TlsExtensionType CACHED_INFO = new TlsExtensionType(25, "cached_info", true);
   public static final TlsExtensionType TLS_LTS = new TlsExtensionType(26, "tls_lts", false);
-  public static final TlsExtensionType COMPRESS_CERTIFICATE = new TlsExtensionType(27,
-      "compress_certificate", true);
-  public static final TlsExtensionType RECORD_SIZE_LIMIT = new TlsExtensionType(28,
-      "record_size_limit", true);
+  public static final TlsExtensionType COMPRESS_CERTIFICATE = new TlsExtensionType(27, "compress_certificate", true);
+  public static final TlsExtensionType RECORD_SIZE_LIMIT = new TlsExtensionType(28, "record_size_limit", true);
   public static final TlsExtensionType PWD_PROTECT = new TlsExtensionType(29, "pwd_protect", false);
   public static final TlsExtensionType PWD_CLEAR = new TlsExtensionType(30, "pwd_clear", false);
-  public static final TlsExtensionType PASSWORD_SALT = new TlsExtensionType(31, "password_salt",
-      false);
-  public static final TlsExtensionType TICKET_PINNING = new TlsExtensionType(32, "ticket_pinning",
-      false);
-  public static final TlsExtensionType TLS_CERT_WITH_EXTERN_PSK = new TlsExtensionType(33,
-      "tls_cert_with_extern_psk", false);
-  public static final TlsExtensionType DELEGATED_CREDENTIALS = new TlsExtensionType(34,
-      "delegated_credentials", false);
-  public static final TlsExtensionType SESSION_TICKET = new TlsExtensionType(35, "session_ticket",
-      true);
+  public static final TlsExtensionType PASSWORD_SALT = new TlsExtensionType(31, "password_salt", false);
+  public static final TlsExtensionType TICKET_PINNING = new TlsExtensionType(32, "ticket_pinning", false);
+  public static final TlsExtensionType TLS_CERT_WITH_EXTERN_PSK = new TlsExtensionType(33, "tls_cert_with_extern_psk", false);
+  public static final TlsExtensionType DELEGATED_CREDENTIALS = new TlsExtensionType(34, "delegated_credentials", false);
+  public static final TlsExtensionType SESSION_TICKET = new TlsExtensionType(35, "session_ticket", true);
   public static final TlsExtensionType TLMSP = new TlsExtensionType(36, "TLMSP", false);
-  public static final TlsExtensionType TLMSP_PROXYING = new TlsExtensionType(37, "TLMSP_proxying",
-      false);
-  public static final TlsExtensionType TLMSP_DELEGATE = new TlsExtensionType(38, "TLMSP_delegate",
-      false);
-  public static final TlsExtensionType SUPPORTED_EKT_CIPHERS = new TlsExtensionType(39,
-      "supported_ekt_ciphers", true);
-  public static final TlsExtensionType PRE_SHARED_KEY = new TlsExtensionType(41, "pre_shared_key",
-      true);
+  public static final TlsExtensionType TLMSP_PROXYING = new TlsExtensionType(37, "TLMSP_proxying", false);
+  public static final TlsExtensionType TLMSP_DELEGATE = new TlsExtensionType(38, "TLMSP_delegate", false);
+  public static final TlsExtensionType SUPPORTED_EKT_CIPHERS = new TlsExtensionType(39, "supported_ekt_ciphers", true);
+  public static final TlsExtensionType PRE_SHARED_KEY = new TlsExtensionType(41, "pre_shared_key", true);
   public static final TlsExtensionType EARLY_DATA = new TlsExtensionType(42, "early_data", true);
-  public static final TlsExtensionType SUPPORTED_VERSIONS = new TlsExtensionType(43,
-      "supported_versions", true);
+  public static final TlsExtensionType SUPPORTED_VERSIONS = new TlsExtensionType(43, "supported_versions", true);
   public static final TlsExtensionType COOKIE = new TlsExtensionType(44, "cookie", true);
-  public static final TlsExtensionType PSK_KEY_EXCHANGE_MODES = new TlsExtensionType(45,
-      "psk_key_exchange_modes", true);
-  public static final TlsExtensionType CERTIFICATE_AUTHORITIES = new TlsExtensionType(47,
-      "certificate_authorities", true);
+  public static final TlsExtensionType PSK_KEY_EXCHANGE_MODES = new TlsExtensionType(45, "psk_key_exchange_modes", true);
+  public static final TlsExtensionType CERTIFICATE_AUTHORITIES = new TlsExtensionType(47, "certificate_authorities", true);
   public static final TlsExtensionType OID_FILTERS = new TlsExtensionType(48, "oid_filters", true);
-  public static final TlsExtensionType POST_HANDSHAKE_AUTH = new TlsExtensionType(49,
-      "post_handshake_auth", true);
-  public static final TlsExtensionType SIGNATURE_ALGORITHMS_CERT = new TlsExtensionType(50,
-      "signature_algorithms_cert", true);
+  public static final TlsExtensionType POST_HANDSHAKE_AUTH = new TlsExtensionType(49, "post_handshake_auth", true);
+  public static final TlsExtensionType SIGNATURE_ALGORITHMS_CERT = new TlsExtensionType(50, "signature_algorithms_cert", true);
   public static final TlsExtensionType KEY_SHARE = new TlsExtensionType(51, "key_share", true);
-  public static final TlsExtensionType TRANSPARENCY_INFO = new TlsExtensionType(52,
-      "transparency_info", false);
-  public static final TlsExtensionType CONNECTION_ID = new TlsExtensionType(53, "connection_id",
-      false);
-  public static final TlsExtensionType EXTERNAL_ID_HASH = new TlsExtensionType(55,
-      "external_id_hash", true);
-  public static final TlsExtensionType EXTERNAL_SESSION_ID = new TlsExtensionType(56,
-      "external_session_id", true);
-  public static final TlsExtensionType QUIC_TRANSPORT_PARAMETERS = new TlsExtensionType(57,
-      "quic_transport_parameters", true);
-  public static final TlsExtensionType TICKET_REQUEST = new TlsExtensionType(58, "ticket_request",
-      true);
-  public static final TlsExtensionType RENEGOTIATION_INFO = new TlsExtensionType(65281,
-      "renegotiation_info", true);
+  public static final TlsExtensionType TRANSPARENCY_INFO = new TlsExtensionType(52, "transparency_info", false);
+  public static final TlsExtensionType CONNECTION_ID = new TlsExtensionType(53, "connection_id", false);
+  public static final TlsExtensionType EXTERNAL_ID_HASH = new TlsExtensionType(55, "external_id_hash", true);
+  public static final TlsExtensionType EXTERNAL_SESSION_ID = new TlsExtensionType(56, "external_session_id", true);
+  public static final TlsExtensionType QUIC_TRANSPORT_PARAMETERS = new TlsExtensionType(57, "quic_transport_parameters", true);
+  public static final TlsExtensionType TICKET_REQUEST = new TlsExtensionType(58, "ticket_request", true);
+  public static final TlsExtensionType RENEGOTIATION_INFO = new TlsExtensionType(65281, "renegotiation_info", true);
 
   private static final Map<Integer, TlsExtensionType> LOOKUP = new HashMap<>();
 
@@ -133,8 +92,7 @@ public class TlsExtensionType {
     LOOKUP.put(SIGNATURE_ALGORITHMS.getValue(), SIGNATURE_ALGORITHMS);
     LOOKUP.put(USE_SRTP.getValue(), USE_SRTP);
     LOOKUP.put(HEARTBEAT.getValue(), HEARTBEAT);
-    LOOKUP.put(APPLICATION_LAYER_PROTOCOL_NEGOTIATION.getValue(),
-        APPLICATION_LAYER_PROTOCOL_NEGOTIATION);
+    LOOKUP.put(APPLICATION_LAYER_PROTOCOL_NEGOTIATION.getValue(), APPLICATION_LAYER_PROTOCOL_NEGOTIATION);
     LOOKUP.put(STATUS_REQUEST_V2.getValue(), STATUS_REQUEST_V2);
     LOOKUP.put(SIGNED_CERTIFICATE_TIMESTAMP.getValue(), SIGNED_CERTIFICATE_TIMESTAMP);
     LOOKUP.put(CLIENT_CERTIFICATE_TYPE.getValue(), CLIENT_CERTIFICATE_TYPE);

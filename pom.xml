@@ -85,6 +85,30 @@
 			<artifactId>guava</artifactId>
 			<version>${guava}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient-cache -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-cache</artifactId>
+			<version>4.5.13</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.squareup/javapoet -->
+		<dependency>
+			<groupId>com.squareup</groupId>
+			<artifactId>javapoet</artifactId>
+			<version>1.13.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.12</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -142,25 +166,42 @@
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>${exec.maven.plugin}</version>
 				<executions>
 					<execution>
+						<id>TlsExtensionType</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>io.github.t4skforce.deepviolet.generators.MainCodeGenerator</mainClass>
+							<arguments>
+								<argument>${project.basedir}/src/main/java</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>CipherMap</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>java</goal>
 						</goals>
+						<configuration>
+							<mainClass>io.github.t4skforce.deepviolet.json.CipherMap</mainClass>
+							<arguments>
+								<argument>${project.build.resources[0].directory}</argument>
+							</arguments>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<mainClass>io.github.t4skforce.deepviolet.json.CipherMap</mainClass>
-					<arguments>
-						<argument>${project.build.resources[0].directory}</argument>
-					</arguments>
-				</configuration>
+
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.plugin}</version>
