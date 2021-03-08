@@ -7,6 +7,11 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 
+ * Should be handled in TlsMapper
+ */
+@Deprecated
 public abstract class TlsUtils {
   private static final byte[] HEX_ARRAY = "0123456789ABCDEF".getBytes(StandardCharsets.US_ASCII);
 
@@ -56,8 +61,7 @@ public abstract class TlsUtils {
   }
 
   public static final int dec32be(byte[] buff, int off) {
-    return ((buff[off] & 0xFF) << 24) | ((buff[off + 1] & 0xFF) << 16)
-        | ((buff[off + 2] & 0xFF) << 8) | (buff[off + 3] & 0xFF);
+    return ((buff[off] & 0xFF) << 24) | ((buff[off + 1] & 0xFF) << 16) | ((buff[off + 2] & 0xFF) << 8) | (buff[off + 3] & 0xFF);
   }
 
   public static final String toString16(int[] buff) {

@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
+@Deprecated
 public class GenericTlsExtension extends AbstractTlsExtension {
 
   private TlsExtensionType type;

@@ -13,14 +13,13 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.NotImplementedException;
 
 /**
- * https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-socket-layer-ssl/116181-technote-product-00.html
- * https://tools.ietf.org/html/rfc5246#page-37
+ * https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-socket-layer-ssl/116181-technote-product-00.html https://tools.ietf.org/html/rfc5246#page-37
  *
  */
+@Deprecated
 public class TlsRecord {
 
-  static final int MAX_RECORD_LEN = 16384;
-
+  public static final int MAX_RECORD_LEN = 16384;
   private TlsRecordTyp type;
 
   private TlsVersion version;
@@ -81,7 +80,7 @@ public class TlsRecord {
   }
 
   public boolean isHandshake() {
-    return TlsRecordTyp.HANDHAKE.equals(type);
+    return TlsRecordTyp.HANDSHAKE.equals(type);
   }
 
   public TlsHandshakeType getHandhakeType() {
@@ -92,7 +91,7 @@ public class TlsRecord {
     byte[] buff = new byte[5];
     in.read(buff, 0, 5);
 
-    TlsRecordTyp type = TlsRecordTyp.of(buff);
+    TlsRecordTyp type = TlsRecordTyp.of(buff[0]);
     TlsVersion version = TlsVersion.of(buff);
     int length = TlsUtils.dec16be(buff, 3);
 
@@ -102,8 +101,7 @@ public class TlsRecord {
     if (type != null && version != null && length < MAX_RECORD_LEN) {
       return new TlsRecord(type, version, length, data);
     }
-    throw new TlsProtocolException(
-        "Invalid TLS Record detected! request:[%s]".formatted(TlsUtils.toString(buff)));
+    throw new TlsProtocolException("Invalid TLS Record detected! request:[%s]".formatted(TlsUtils.toString(buff)));
   }
 
   public static TlsRecord of(TlsServerHello hello) {
@@ -116,8 +114,7 @@ public class TlsRecord {
 
   @Override
   public String toString() {
-    return "TlsRecord [type=" + getType() + ", version=" + getVersion() + ", length=" + getLength()
-        + "]";
+    return "TlsRecord [type=" + getType() + ", version=" + getVersion() + ", length=" + getLength() + "]";
   }
 
 }

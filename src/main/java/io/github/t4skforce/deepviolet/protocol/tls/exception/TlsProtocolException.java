@@ -1,5 +1,6 @@
 package io.github.t4skforce.deepviolet.protocol.tls.exception;
 
+@Deprecated
 public class TlsProtocolException extends Exception {
   private static final long serialVersionUID = -3084554435617469759L;
 
@@ -7,8 +8,7 @@ public class TlsProtocolException extends Exception {
     super();
   }
 
-  public TlsProtocolException(String message, Throwable cause, boolean enableSuppression,
-      boolean writableStackTrace) {
+  public TlsProtocolException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 

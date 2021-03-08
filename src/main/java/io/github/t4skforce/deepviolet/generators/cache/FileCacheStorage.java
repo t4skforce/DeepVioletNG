@@ -1,4 +1,4 @@
-package io.github.t4skforce.deepviolet.generators.impl.cache;
+package io.github.t4skforce.deepviolet.generators.cache;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.cache.HttpCacheEntry;
 import org.apache.http.client.cache.HttpCacheUpdateCallback;
 import org.apache.http.impl.client.cache.CacheConfig;
@@ -25,19 +25,9 @@ public class FileCacheStorage extends ManagedHttpCacheStorage {
 
   private File cacheDir;
 
-  private long maxAge;
-
-  private TimeUnit unit;
-
   public FileCacheStorage(final CacheConfig config, File cacheDir) {
-    this(config, cacheDir, 24, TimeUnit.HOURS);
-  }
-
-  public FileCacheStorage(final CacheConfig config, File cacheDir, long maxAge, TimeUnit unit) {
     super(config);
     this.cacheDir = cacheDir;
-    this.maxAge = maxAge;
-    this.unit = unit;
     this.cacheDir.mkdirs();
   }
 
@@ -70,12 +60,13 @@ public class FileCacheStorage extends ManagedHttpCacheStorage {
     super.updateEntry(url, callback);
     HttpCacheEntry entry = loadCacheEnrty(url);
     if (entry != null) {
-      callback.update(entry);
+      entry = callback.update(entry);
+      saveCacheEntry(url, entry);
     }
   }
 
   private void saveCacheEntry(String url, HttpCacheEntry entry) {
-    if (entry.getStatusCode() < 300) {
+    if (entry.getStatusCode() < HttpStatus.SC_MULTIPLE_CHOICES && entry.getStatusCode() >= HttpStatus.SC_OK) {
       ObjectOutputStream stream = null;
       try {
         File cache = getCacheFile(url);

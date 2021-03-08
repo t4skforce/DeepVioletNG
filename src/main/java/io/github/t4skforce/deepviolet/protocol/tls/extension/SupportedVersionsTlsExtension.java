@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class SupportedVersionsTlsExtension extends AbstractTlsExtension {
 
   private static final String TO_STRING_FORMAT = "%s(%s)";
@@ -62,8 +63,7 @@ public class SupportedVersionsTlsExtension extends AbstractTlsExtension {
   }
 
   // https://tools.ietf.org/html/rfc8446#section-4.2.1
-  public static SupportedVersionsTlsExtension of(byte[] data, TlsHandshakeType handshake)
-      throws TlsProtocolException {
+  public static SupportedVersionsTlsExtension of(byte[] data, TlsHandshakeType handshake) throws TlsProtocolException {
     ByteBuffer bb = ByteBuffer.wrap(data);
     switch (handshake) {
     case CLIENT_HELLO:
@@ -81,8 +81,7 @@ public class SupportedVersionsTlsExtension extends AbstractTlsExtension {
       bb.get(bvers);
       return new SupportedVersionsTlsExtension(TlsVersion.of(TlsUtils.dec16be(bvers)));
     default:
-      throw new TlsProtocolException(
-          "Invalid HandshakeType[" + handshake + "] for SupportedVersions");
+      throw new TlsProtocolException("Invalid HandshakeType[" + handshake + "] for SupportedVersions");
     }
   }
 

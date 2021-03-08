@@ -1,14 +1,18 @@
 package io.github.t4skforce.deepviolet.protocol.tls;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-import io.github.t4skforce.deepviolet.protocol.tls.util.TlsUtils;
-
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class TlsVersion {
   private static final String STR_TLSV1 = "TLSv1";
@@ -26,8 +30,30 @@ public class TlsVersion {
   public static final TlsVersion TLS_V1_2 = new TlsVersion(0x0303, STR_TLSV1_2);
   public static final TlsVersion TLS_V1_3 = new TlsVersion(0x0304, STR_TLSV1_3);
 
-  private static final Pattern TLS_REGEX = Pattern.compile("^TLSv1.([0-9])$",
-      Pattern.CASE_INSENSITIVE);
+  private static final Pattern TLS_REGEX = Pattern.compile("^TLSv1.([0-9])$", Pattern.CASE_INSENSITIVE);
+
+  // https://tools.ietf.org/html/draft-davidben-tls-grease-01#section-5
+  private static final Set<Integer> GREASE = new HashSet<>();
+
+  static {
+    GREASE.addAll(Arrays.asList(2570, // {0x0A,0x0A}
+        6682, // {0x1A,0x1A}
+        10794, // {0x2A,0x2A}
+        14906, // {0x3A,0x3A}
+        19018, // {0x4A,0x4A}
+        23130, // {0x5A,0x5A}
+        27242, // {0x6A,0x6A}
+        31354, // {0x7A,0x7A}
+        35466, // {0x8A,0x8A}
+        39578, // {0x9A,0x9A}
+        43690, // {0xAA,0xAA}
+        47802, // {0xBA,0xBA}
+        51914, // {0xCA,0xCA}
+        56026, // {0xDA,0xDA}
+        60138, // {0xEA,0xEA}
+        64250 // {0xFA,0xFA}
+    ));
+  }
 
   private static final Map<Integer, TlsVersion> VERSIONS = new HashMap<>();
 
@@ -59,8 +85,17 @@ public class TlsVersion {
     return version;
   }
 
+  @JsonValue
   public String getName() {
     return name;
+  }
+
+  public boolean isUnknown() {
+    return unknown;
+  }
+
+  public byte[] getBytes() {
+    return new byte[] { (byte) (version >>> 8), version.byteValue() };
   }
 
   /**
@@ -83,6 +118,12 @@ public class TlsVersion {
       if (tlsm.matches()) {
         return of(0x0301 + Integer.parseInt(tlsm.group(1), 10));
       }
+      if (StringUtils.startsWith(name, "GREASE:0x")) {
+        return of(Integer.parseInt(StringUtils.substring(name, 9), 16));
+      }
+      if (StringUtils.startsWith(name, "UNDEFINED:0x")) {
+        return of(Integer.parseInt(StringUtils.substring(name, 12), 16));
+      }
     }
     return UNKNOWN;
   }
@@ -93,21 +134,27 @@ public class TlsVersion {
    * @param version Integer representation of version
    * @return
    */
+  @JsonCreator
   public static TlsVersion of(int version) {
     return VERSIONS.computeIfAbsent(version, k -> {
-      if (k >>> 8 == 0x03) {
+      int f = (k >>> 8);
+      if (f == 0x03 && ((k & 0xFF) - 1) <= 9) {
         return new TlsVersion(version, "TLSv1." + ((k & 0xFF) - 1));
       }
-      return new TlsVersion(version, String.format("UNKNOWN_VERSION:0x%04X", k), true);
+      if (GREASE.contains(k)) {
+        return new TlsVersion(version, String.format("GREASE:0x%04X", k), true);
+      }
+      return new TlsVersion(version, String.format("UNDEFINED:0x%04X", k), true);
     });
   }
 
-  public byte[] getBytes() {
-    return TlsUtils.enc16be(version, new byte[2]);
+  @JsonCreator
+  public static TlsVersion of(byte[] data) {
+    return of(toInt(data));
   }
 
-  public static TlsVersion of(byte[] data) {
-    return of(((data[1] & 0xFF) << 8) | (data[2] & 0xFF));
+  public static boolean isValid(byte[] data) {
+    return !of(data).unknown;
   }
 
   @Override
@@ -129,6 +176,13 @@ public class TlsVersion {
 
   @Override
   public String toString() {
+    if (this.unknown) {
+      return name;
+    }
     return name + " (" + String.format("0x%04X", version) + ")";
+  }
+
+  private static int toInt(byte[] data) {
+    return data.length == 2 ? ((data[0] & 0xFF) << 8) | (data[1] & 0xFF) : -1;
   }
 }

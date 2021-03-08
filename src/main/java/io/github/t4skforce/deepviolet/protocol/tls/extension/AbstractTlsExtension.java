@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
+@Deprecated
 public abstract class AbstractTlsExtension {
 
   public abstract TlsExtensionType getType();
@@ -14,8 +15,7 @@ public abstract class AbstractTlsExtension {
   }
 
   public boolean isRecommended() {
-    return Optional.ofNullable(getType()).map(TlsExtensionType::isRecommended)
-        .orElse(Boolean.FALSE);
+    return Optional.ofNullable(getType()).map(TlsExtensionType::isRecommended).orElse(Boolean.FALSE);
   }
 
   public boolean isReserved() {
@@ -27,8 +27,7 @@ public abstract class AbstractTlsExtension {
   }
 
   public boolean isReservedForPrivateUse() {
-    return Optional.ofNullable(getType()).map(TlsExtensionType::isReservedForPrivateUse)
-        .orElse(Boolean.TRUE);
+    return Optional.ofNullable(getType()).map(TlsExtensionType::isReservedForPrivateUse).orElse(Boolean.TRUE);
   }
 
   public boolean isValid() {

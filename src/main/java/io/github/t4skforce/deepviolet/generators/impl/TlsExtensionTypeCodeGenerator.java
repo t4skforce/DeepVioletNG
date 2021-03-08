@@ -1,21 +1,35 @@
 package io.github.t4skforce.deepviolet.generators.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
+import io.github.t4skforce.deepviolet.generators.mapper.deserializer.BooleanDeserializer;
 import io.github.t4skforce.deepviolet.protocol.tls.exception.TlsProtocolException;
 import io.github.t4skforce.deepviolet.protocol.tls.util.TlsUtils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.lang.model.element.Modifier;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -31,10 +45,12 @@ public class TlsExtensionTypeCodeGenerator extends HttpRequestCodeGenerator {
 
   private static final String TARGET_CLASS_NAME = "io.github.t4skforce.deepviolet.protocol.tls.extension.TlsExtensionTypeGenerated";
 
-  private static final String SOURCE_URL = "https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xml";
+  private static final String SOURCE_URL = "https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values-1.csv";
 
   public TlsExtensionTypeCodeGenerator() throws Exception {
     super();
+    setCacheMaxAgeUnit(TimeUnit.DAYS);
+    setCacheMaxAgeValue(1);
   }
 
   @Override
@@ -47,9 +63,132 @@ public class TlsExtensionTypeCodeGenerator extends HttpRequestCodeGenerator {
     return new HttpGet(SOURCE_URL);
   }
 
+  @JsonPropertyOrder({ "Value", "Extension Name", "TLS 1.3", "Recommended", "Reference" })
+  static class TlsExtensionTypeLine {
+
+    @JsonProperty("Extension Name")
+    private String name;
+
+    @JsonProperty("TLS 1.3")
+    private String tls13;
+
+    @JsonProperty("Recommended")
+    @JsonDeserialize(using = BooleanDeserializer.class)
+    private Boolean recommended;
+
+    @JsonProperty("Reference")
+    private String references;
+
+    @JsonIgnore
+    private boolean range;
+
+    @JsonIgnore
+    private Integer to;
+
+    @JsonIgnore
+    private Integer from;
+
+    public TlsExtensionTypeLine() {
+      super();
+    }
+
+    public String getValue() {
+      if (this.range) {
+        return String.format("%s-%s", this.from, this.to);
+      }
+      return this.from != null ? this.from.toString() : StringUtils.EMPTY;
+    }
+
+    @JsonProperty("Value")
+    public void setValue(String value) {
+      if (StringUtils.isNoneBlank(value)) {
+        String[] parts = StringUtils.split(value, "-");
+        this.range = parts.length == 2;
+        this.to = this.from = Integer.valueOf(parts[0]);
+        if (this.range) {
+          this.to = Integer.valueOf(parts[1]);
+        }
+      }
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public String getTls13() {
+      return tls13;
+    }
+
+    public void setTls13(String tls13) {
+      this.tls13 = tls13;
+    }
+
+    public Boolean getRecommended() {
+      return recommended;
+    }
+
+    public void setRecommended(Boolean recommended) {
+      this.recommended = recommended;
+    }
+
+    public String getReferences() {
+      return references;
+    }
+
+    public void setReferences(String references) {
+      this.references = references;
+    }
+
+    public boolean isRange() {
+      return range;
+    }
+
+    public void setRange(boolean range) {
+      this.range = range;
+    }
+
+    public Integer getTo() {
+      return to;
+    }
+
+    public void setTo(Integer to) {
+      this.to = to;
+    }
+
+    public Integer getFrom() {
+      return from;
+    }
+
+    public void setFrom(Integer from) {
+      this.from = from;
+    }
+
+    @Override
+    public String toString() {
+      return "TlsExtensionTypeLine [value=" + getValue() + ", name=" + name + ", tls13=" + tls13 + ", recommended=" + recommended + ", references=" + references + "]";
+    }
+  }
+
   private void parseResponse(CloseableHttpResponse response, FieldSpec staticLookup, CodeBlock.Builder lookupInit) {
     // TODO: implement
     // https://www.baeldung.com/java-xpath
+    CsvMapper mapper = CsvMapper.builder().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).enable(CsvParser.Feature.TRIM_SPACES).enable(CsvParser.Feature.SKIP_EMPTY_LINES)
+        .enable(CsvParser.Feature.IGNORE_TRAILING_UNMAPPABLE).enable(CsvParser.Feature.TRIM_SPACES).build();
+    CsvSchema schema = mapper.schemaFor(TlsExtensionTypeLine.class).withHeader();
+
+    try {
+      MappingIterator<TlsExtensionTypeLine> typeLines = mapper.readerFor(TlsExtensionTypeLine.class).with(schema).readValues(response.getEntity().getContent());
+      for (TlsExtensionTypeLine line : typeLines.readAll()) {
+        System.out.println(line);
+      }
+    } catch (UnsupportedOperationException | IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -119,12 +258,13 @@ public class TlsExtensionTypeCodeGenerator extends HttpRequestCodeGenerator {
     typeSpec.addMethod(isValid);
 
     // of(byte[] buff)
-    String buffName = "buff";
-    typeSpec.addMethod(MethodSpec.methodBuilder("of").addModifiers(Modifier.PUBLIC, Modifier.STATIC).returns(self).addParameter(byte[].class, buffName).addException(TlsProtocolException.class)
-        .addJavadoc("Returns instance of {@link $T} for given protocol bytes\n@param $N\n@return\n@throws $T", self, buffName, TlsProtocolException.class)
-        .beginControlFlow("if ($T.isNotEmpty($N) && $N.length == 2)", ArrayUtils.class, buffName, buffName).addStatement("int $N = $T.dec16be($N)", "key", TlsUtils.class, buffName)
+    ParameterSpec buffParam = ParameterSpec.builder(byte[].class, "buff").build();
+    MethodSpec of = MethodSpec.methodBuilder("of").addModifiers(Modifier.PUBLIC, Modifier.STATIC).returns(self).addParameter(buffParam).addException(TlsProtocolException.class)
+        .addJavadoc("Returns instance of {@link $T} for given protocol bytes\n@param $N\n@return\n@throws $T", self, buffParam, TlsProtocolException.class)
+        .beginControlFlow("if ($T.isNotEmpty($N) && $N.length == 2)", ArrayUtils.class, buffParam, buffParam).addStatement("int $N = $T.dec16be($N)", "key", TlsUtils.class, buffParam)
         .beginControlFlow("if ($N.containsKey($N))", staticLookup, "key").addStatement("return $N.get($N)", staticLookup, "key").endControlFlow().endControlFlow()
-        .addStatement("throw new $T($S + $T.toString($N) + $S)", TlsProtocolException.class, "Given data [", TlsUtils.class, buffName, "] is invalid for ExtensionType").build());
+        .addStatement("throw new $T($S + $T.toString($N) + $S)", TlsProtocolException.class, "Given data [", TlsUtils.class, buffParam, "] is invalid for ExtensionType").build();
+    typeSpec.addMethod(of);
 
     // toString()
     MethodSpec toString = MethodSpec.methodBuilder("toString").addModifiers(Modifier.PUBLIC).returns(String.class).addAnnotation(Override.class).addStatement("return $N", name).build();
@@ -135,9 +275,10 @@ public class TlsExtensionTypeCodeGenerator extends HttpRequestCodeGenerator {
     typeSpec.addMethod(hashCode);
 
     // equals(Object obj)
-    MethodSpec equals = MethodSpec.methodBuilder("equals").addModifiers(Modifier.PUBLIC).returns(TypeName.BOOLEAN).addParameter(Object.class, "obj").addAnnotation(Override.class)
-        .beginControlFlow("if (this == obj)").addStatement("return true").endControlFlow().beginControlFlow("if (obj == null || getClass() != obj.getClass())").addStatement("return false")
-        .endControlFlow().addStatement("return $N != (($N) $N).$N", value, self.simpleName(), "obj", value).build();
+    ParameterSpec objParam = ParameterSpec.builder(Object.class, "obj").build();
+    MethodSpec equals = MethodSpec.methodBuilder("equals").addModifiers(Modifier.PUBLIC).returns(TypeName.BOOLEAN).addParameter(objParam).addAnnotation(Override.class)
+        .beginControlFlow("if (this == $N)", objParam).addStatement("return true").endControlFlow().beginControlFlow("if ($N == null || getClass() != $N.getClass())", objParam, objParam)
+        .addStatement("return false").endControlFlow().addStatement("return $N != (($N) $N).$N", value, self.simpleName(), objParam, value).build();
     typeSpec.addMethod(equals);
 
   }

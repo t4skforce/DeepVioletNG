@@ -4,7 +4,7 @@ import com.google.common.net.HttpHeaders;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 
-import io.github.t4skforce.deepviolet.generators.impl.cache.FileCacheStorage;
+import io.github.t4skforce.deepviolet.generators.cache.FileCacheStorage;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +17,9 @@ import java.util.concurrent.TimeUnit;
 import javax.lang.model.element.Modifier;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.cache.CacheResponseStatus;
+import org.apache.http.client.cache.HttpCacheContext;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -46,9 +49,13 @@ public abstract class HttpRequestCodeGenerator extends AbstractCodeGenerator {
 
   private CloseableHttpResponse response;
 
-  protected long cacheMaxSize = 51200L; // 50 MiB
+  private long cacheMaxSize = 51200L; // 50 MiB
 
-  protected int cacheMaxEntries = 300;
+  private int cacheMaxEntries = 300;
+
+  private TimeUnit cacheMaxAgeUnit = TimeUnit.HOURS;
+
+  private long cacheMaxAgeValue = 24;
 
   protected HttpRequestCodeGenerator() throws Exception {
     super();
@@ -57,7 +64,7 @@ public abstract class HttpRequestCodeGenerator extends AbstractCodeGenerator {
   @Override
   public void init() throws Exception {
     CacheConfig cacheConfig = CacheConfig.custom().setMaxCacheEntries(cacheMaxEntries).setMaxObjectSize(cacheMaxSize).setHeuristicCachingEnabled(true)
-        .setHeuristicDefaultLifetime(TimeUnit.HOURS.toSeconds(24)).build(); // 50MB
+        .setHeuristicDefaultLifetime(cacheMaxAgeUnit.toSeconds(cacheMaxAgeValue)).build(); // 50MB
     ManagedHttpCacheStorage storage = new FileCacheStorage(cacheConfig, new File(System.getProperty(JAVA_IO_TMPDIR), "http_cache"));
 
     client = CachingHttpClients.custom().setCacheConfig(cacheConfig).setHttpCacheStorage(storage).build();
@@ -76,11 +83,31 @@ public abstract class HttpRequestCodeGenerator extends AbstractCodeGenerator {
       request.addHeader(HttpHeaders.ETAG, targetEtag);
     }
 
+    HttpCacheContext context = HttpCacheContext.create();
     try {
-      response = client.execute(request);
+      response = client.execute(request, context);
+
+      if (LOG.isDebugEnabled()) {
+        CacheResponseStatus responseStatus = context.getCacheResponseStatus();
+        switch (responseStatus) {
+        case CACHE_HIT:
+          LOG.debug("A response was generated from the cache with no requests sent upstream");
+          break;
+        case CACHE_MODULE_RESPONSE:
+          LOG.debug("The response was generated directly by the caching module");
+          break;
+        case CACHE_MISS:
+          LOG.debug("The response came from an upstream server");
+          break;
+        case VALIDATED:
+          LOG.debug("The response was generated from the cache after validating the entry with the origin server");
+          break;
+        }
+      }
+
       int statusCode = response.getStatusLine().getStatusCode();
       LOG.info("Requested URL({}):{}", statusCode, request.getURI().toString());
-      if (statusCode == 200) {
+      if (statusCode == HttpStatus.SC_OK) {
         if (response.containsHeader(HttpHeaders.ETAG)) {
           sourceEtag = response.getFirstHeader(HttpHeaders.ETAG).getValue();
         }
@@ -97,6 +124,22 @@ public abstract class HttpRequestCodeGenerator extends AbstractCodeGenerator {
     } catch (IOException e) {
       LOG.error(e.getMessage(), e);
     }
+  }
+
+  protected void setCacheMaxSize(long cacheMaxSize) {
+    this.cacheMaxSize = cacheMaxSize;
+  }
+
+  protected void setCacheMaxEntries(int cacheMaxEntries) {
+    this.cacheMaxEntries = cacheMaxEntries;
+  }
+
+  protected void setCacheMaxAgeUnit(TimeUnit cacheMaxAgeUnit) {
+    this.cacheMaxAgeUnit = cacheMaxAgeUnit;
+  }
+
+  protected void setCacheMaxAgeValue(long cacheMaxAgeValue) {
+    this.cacheMaxAgeValue = cacheMaxAgeValue;
   }
 
   /**

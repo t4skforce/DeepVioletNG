@@ -1,8 +1,14 @@
 package io.github.t4skforce.deepviolet.protocol.tls;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import org.apache.commons.lang3.StringUtils;
+
+@Deprecated
 public enum TlsRecordTyp {
-  HANDHAKE((byte) 0x16, "Handshake"), CHANGE_CYPHER_SPEC((byte) 0x14, "Change Cipher Spec"),
-  ALERT((byte) 0x15, "Alert"), APPLICATION_DATE((byte) 0x17, "Application Data");
+  CHANGE_CYPHER_SPEC((byte) 0x14, ""), ALERT((byte) 0x15, ""), HANDSHAKE((byte) 0x16, ""), APPLICATION_DATE((byte) 0x17, ""), HEARTBEAT((byte) 0x18, ""), TLS12_CID((byte) 0x19, "");
 
   private byte data;
   private String name;
@@ -16,12 +22,9 @@ public enum TlsRecordTyp {
     return this.data;
   }
 
+  @JsonValue
   public String getName() {
     return this.name;
-  }
-
-  public static TlsRecordTyp of(byte[] data) {
-    return of(data[0]);
   }
 
   public static TlsRecordTyp of(byte type) {
@@ -31,6 +34,20 @@ public enum TlsRecordTyp {
       }
     }
     return null;
+  }
+
+  @JsonCreator
+  public static TlsRecordTyp of(@JsonProperty("type") String type) {
+    for (TlsRecordTyp t : values()) {
+      if (StringUtils.equals(t.getName(), type)) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  public static boolean isValid(byte type) {
+    return of(type) != null;
   }
 
   @Override

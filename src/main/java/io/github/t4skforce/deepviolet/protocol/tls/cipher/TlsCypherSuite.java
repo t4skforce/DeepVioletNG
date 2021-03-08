@@ -6,6 +6,7 @@ import io.github.t4skforce.deepviolet.protocol.tls.util.TlsUtils;
 
 import java.io.IOException;
 
+@Deprecated
 public class TlsCypherSuite implements Comparable<TlsCypherSuite> {
 
   private byte c1;

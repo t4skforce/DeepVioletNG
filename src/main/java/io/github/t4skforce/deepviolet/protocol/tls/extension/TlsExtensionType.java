@@ -8,6 +8,7 @@ import java.util.Map;
 
 // https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml
 // https://tools.ietf.org/html/rfc6066
+@Deprecated
 public class TlsExtensionType {
   private static final String RESERVED_FOR_PRIVATE_USE = "reserved_for_private_use";
 

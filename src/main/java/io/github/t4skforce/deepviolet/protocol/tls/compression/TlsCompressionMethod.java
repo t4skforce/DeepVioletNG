@@ -10,11 +10,11 @@ import java.util.Set;
 
 // https://tools.ietf.org/html/rfc3749
 // https://www.iana.org/assignments/comp-meth-ids/comp-meth-ids.xhtml
+@Deprecated
 public class TlsCompressionMethod {
 
   public static final TlsCompressionMethod NULL = new TlsCompressionMethod((byte) 0x00, "Null");
-  public static final TlsCompressionMethod DEFLATE = new TlsCompressionMethod((byte) 0x01,
-      "DEFLATE");
+  public static final TlsCompressionMethod DEFLATE = new TlsCompressionMethod((byte) 0x01, "DEFLATE");
   public static final TlsCompressionMethod LZS = new TlsCompressionMethod((byte) 0x40, "LZS");
 
   private static final Map<Byte, TlsCompressionMethod> LOOKUP = new HashMap<Byte, TlsCompressionMethod>();
@@ -30,8 +30,7 @@ public class TlsCompressionMethod {
       LOOKUP.put(Byte.valueOf((byte) i), new TlsCompressionMethod((byte) i, "UNASSIGNED"));
     }
     for (int i = 224; i <= 255; i++) {
-      LOOKUP.put(Byte.valueOf((byte) i),
-          new TlsCompressionMethod((byte) i, "Reserved for Private Use"));
+      LOOKUP.put(Byte.valueOf((byte) i), new TlsCompressionMethod((byte) i, "Reserved for Private Use"));
     }
   }
 

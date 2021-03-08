@@ -19,6 +19,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 public class TlsClientHello extends TlsMessage {
 
   private static final Logger LOG = LoggerFactory.getLogger(TlsClientHello.class);
@@ -39,8 +40,7 @@ public class TlsClientHello extends TlsMessage {
 
   private List<AbstractTlsExtension> extensions;
 
-  public TlsClientHello(int length, TlsVersion legacy_version, byte[] random, byte[] sessionId,
-      List<TlsCypherSuite> ciphers, List<TlsCompressionMethod> compressionMethods,
+  public TlsClientHello(int length, TlsVersion legacy_version, byte[] random, byte[] sessionId, List<TlsCypherSuite> ciphers, List<TlsCompressionMethod> compressionMethods,
       List<AbstractTlsExtension> extensions) {
     this.length = length;
     this.legacy_version = legacy_version;
@@ -74,8 +74,7 @@ public class TlsClientHello extends TlsMessage {
 
   @Override
   public String toString() {
-    return "TlsClientHello [length=" + length + ", legacy_version=" + legacy_version + ", ciphers="
-        + ciphers + ", compression=" + compression + ", extensions=" + extensions + "]";
+    return "TlsClientHello [length=" + length + ", legacy_version=" + legacy_version + ", ciphers=" + ciphers + ", compression=" + compression + ", extensions=" + extensions + "]";
   }
 
   public static TlsClientHello of(byte[] data) throws IOException, TlsProtocolException {
@@ -98,8 +97,7 @@ public class TlsClientHello extends TlsMessage {
         List<TlsCompressionMethod> compressionMethods = getCompression(bb);
         List<AbstractTlsExtension> extensions = getExtensions(data, length, bb);
 
-        return new TlsClientHello(length, legacy_version, random, sessionId, ciphers,
-            compressionMethods, extensions);
+        return new TlsClientHello(length, legacy_version, random, sessionId, ciphers, compressionMethods, extensions);
       } catch (IndexOutOfBoundsException e) {
         throw new TlsProtocolException("Invalid ClientHello", e);
       }
@@ -114,8 +112,7 @@ public class TlsClientHello extends TlsMessage {
     return sessionId;
   }
 
-  private static List<TlsCypherSuite> getCipers(ByteBuffer bb)
-      throws IOException, TlsProtocolException {
+  private static List<TlsCypherSuite> getCipers(ByteBuffer bb) throws IOException, TlsProtocolException {
     byte[] lcb = new byte[2];
     bb.get(lcb);
     int lenCipers = TlsUtils.dec16be(lcb);
@@ -130,8 +127,7 @@ public class TlsClientHello extends TlsMessage {
     return ciphers;
   }
 
-  private static List<TlsCompressionMethod> getCompression(ByteBuffer bb)
-      throws TlsProtocolException {
+  private static List<TlsCompressionMethod> getCompression(ByteBuffer bb) throws TlsProtocolException {
     List<TlsCompressionMethod> compressionMethods = new ArrayList<>();
     int compressionMethodLength = (int) bb.get();
     for (int i = 0; i < compressionMethodLength; i++) {
@@ -140,8 +136,7 @@ public class TlsClientHello extends TlsMessage {
     return compressionMethods;
   }
 
-  private static List<AbstractTlsExtension> getExtensions(byte[] data, int length, ByteBuffer bb)
-      throws TlsProtocolException {
+  private static List<AbstractTlsExtension> getExtensions(byte[] data, int length, ByteBuffer bb) throws TlsProtocolException {
     List<AbstractTlsExtension> extensions = new ArrayList<>();
     // extensions_present
     if (bb.position() < length) {

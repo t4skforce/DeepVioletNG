@@ -2,6 +2,7 @@ package io.github.t4skforce.deepviolet.protocol.tls.message;
 
 import io.github.t4skforce.deepviolet.protocol.tls.handshake.TlsHandshakeType;
 
+@Deprecated
 public abstract class TlsMessage {
 
   public abstract TlsHandshakeType getType();
