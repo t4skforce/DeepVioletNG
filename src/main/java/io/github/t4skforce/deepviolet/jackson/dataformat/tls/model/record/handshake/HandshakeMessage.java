@@ -3,6 +3,7 @@ package io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.record.hands
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.annotations.TlsHandshake;
 
@@ -10,7 +11,8 @@ import io.github.t4skforce.deepviolet.jackson.dataformat.tls.annotations.TlsHand
 @JsonSubTypes({ @Type(value = ClientHello.class, name = TlsHandshake.Name.CLIENT_HELLO), @Type(value = ServertHello.class, name = TlsHandshake.Name.SERVER_HELLO) })
 public abstract class HandshakeMessage {
 
-  @JsonProperty(value = "length", required = true)
+  @JacksonXmlProperty(localName = TlsHandshake.Fields.LENGTH, isAttribute = true)
+  @JsonProperty(value = TlsHandshake.Fields.LENGTH, required = true)
   private int length;
 
   public HandshakeMessage() {

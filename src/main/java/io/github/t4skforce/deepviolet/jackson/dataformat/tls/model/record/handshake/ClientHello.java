@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.annotations.TlsClientHello;
 import io.github.t4skforce.deepviolet.protocol.tls.TlsVersion;
 
+import java.util.List;
+
 /*
  * https://tools.ietf.org/html/rfc5246 struct { ProtocolVersion client_version; Random random; SessionID session_id; CipherSuite cipher_suites<2..2^16-2>; CompressionMethod
  * compression_methods<1..2^8-1>; select (extensions_present) { case false: struct {}; case true: Extension extensions<0..2^16-1>; }; } ClientHello;
@@ -20,6 +22,15 @@ public class ClientHello extends HandshakeMessage {
 
   @JsonProperty(value = TlsClientHello.Fields.SESSIONID)
   private String session;
+
+  @JsonProperty(value = TlsClientHello.Fields.CIPHER_SUITES)
+  private List<String> ciphers;
+
+  @JsonProperty(value = TlsClientHello.Fields.COMPRESSION_METHOD)
+  private String compression;
+
+  @JsonProperty(value = TlsClientHello.Fields.EXTENSIONS)
+  private List<String> extensions;
 
   public ClientHello() {
     super();
@@ -48,4 +59,29 @@ public class ClientHello extends HandshakeMessage {
   public void setSession(String session) {
     this.session = session;
   }
+
+  public List<String> getCiphers() {
+    return ciphers;
+  }
+
+  public void setCiphers(List<String> ciphers) {
+    this.ciphers = ciphers;
+  }
+
+  public String getCompression() {
+    return compression;
+  }
+
+  public void setCompression(String compression) {
+    this.compression = compression;
+  }
+
+  public List<String> getExtensions() {
+    return extensions;
+  }
+
+  public void setExtensions(List<String> extensions) {
+    this.extensions = extensions;
+  }
+
 }

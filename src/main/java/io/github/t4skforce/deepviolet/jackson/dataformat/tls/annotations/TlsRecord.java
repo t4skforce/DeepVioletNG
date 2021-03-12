@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 @Retention(RetentionPolicy.RUNTIME)
 @JacksonAnnotationsInside
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JacksonXmlRootElement(localName = "record")
 @JsonPropertyOrder(value = { "type", "protocol", "length", "message" })
 public @interface TlsRecord {
 

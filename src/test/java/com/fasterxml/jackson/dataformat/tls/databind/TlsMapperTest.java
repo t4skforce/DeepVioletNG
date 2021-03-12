@@ -4,8 +4,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.TlsParser;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.databind.TlsMapper;
@@ -36,7 +36,7 @@ class TlsMapperTest {
       (byte) 0x00, (byte) 0xA5, // 0xA5 (165) bytes of handshake message follows
       // Handshake Header
       (byte) 0x01, // handshake message type 0x01 (client hello)
-      (byte) 0x00, (byte) 0x00, (byte) 0xa1, // 0xA1 (161) bytes of client hello follows
+      (byte) 0x00, (byte) 0x00, (byte) 0xA1, // 0xA1 (161) bytes of client hello follows
       // Client Version
       (byte) 0x03, (byte) 0x03, // The protocol version of "3,3" (meaning TLS 1.2) is given.
       // Client Random
@@ -150,13 +150,13 @@ class TlsMapperTest {
     assertNull(hello.getSession());
 
     ObjectMapper jsonmapper = new ObjectMapper();
-    System.out.println(jsonmapper.writeValueAsString(handshake));
+    System.out.println(jsonmapper.writer().with(SerializationFeature.INDENT_OUTPUT).writeValueAsString(handshake));
 
     XmlMapper xmlMapper = new XmlMapper();
-    System.out.println(xmlMapper.writeValueAsString(handshake));
+    System.out.println(xmlMapper.writer().with(SerializationFeature.INDENT_OUTPUT).writeValueAsString(handshake));
 
-    ObjectMapper ymlmapper = new ObjectMapper(new YAMLFactory());
-    System.out.println(ymlmapper.writeValueAsString(handshake));
+//    ObjectMapper ymlmapper = new ObjectMapper(new YAMLFactory());
+//    System.out.println(ymlmapper.writeValueAsString(handshake));
   }
 
   @Test

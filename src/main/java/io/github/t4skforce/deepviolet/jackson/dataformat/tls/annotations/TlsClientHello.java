@@ -24,6 +24,9 @@ public @interface TlsClientHello {
     public static final String LEGACY_VERSION = "legacy_version";
     public static final String RANDOM = "random";
     public static final String SESSIONID = "sessionId";
+    public static final String CIPHER_SUITES = "cipherSuites";
+    public static final String COMPRESSION_METHOD = "commpressionMethod";
+    public static final String EXTENSIONS = "extensions";
   }
 
 }

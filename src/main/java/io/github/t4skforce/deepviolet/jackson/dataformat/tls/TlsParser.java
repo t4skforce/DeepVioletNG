@@ -20,16 +20,19 @@ import io.github.t4skforce.deepviolet.jackson.dataformat.tls.annotations.TlsClie
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.annotations.TlsHandshake;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.annotations.TlsRecord;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.text.MessageFormat;
 import java.util.Base64;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class TlsParser extends ParserMinimalBase {
@@ -89,6 +92,7 @@ public class TlsParser extends ParserMinimalBase {
   private TlsRecord.Type recordType;
   private TlsHandshake.Type handshakeType;
   private boolean emptyStringsToNull;
+  private int recordLength;
 
   public TlsParser(IOContext ctx, int generalParserFeatures, int formatFeatures, ObjectCodec codec, ByteQuadsCanonicalizer can, ByteBuffer bb) {
     super(generalParserFeatures);
@@ -117,6 +121,7 @@ public class TlsParser extends ParserMinimalBase {
   }
 
   private int cc = -1;
+  private int handshakeLength;
 
   @Override
   public JsonToken nextToken() throws IOException {
@@ -197,34 +202,7 @@ public class TlsParser extends ParserMinimalBase {
     return (_currToken = JsonToken.NOT_AVAILABLE);
   }
 
-  private void parseClientHello() {
-    // Protocol Version
-    addField(TlsClientHello.Fields.LEGACY_VERSION, getInt16());
-
-    // Random
-    addField(TlsClientHello.Fields.RANDOM, getBase64String(32));
-
-    // SessionId
-    addField(TlsClientHello.Fields.SESSIONID, getBase64String((int) this.bb.get()));
-  }
-
-  private String getBase64String(int byteCount) {
-    byte[] data = new byte[byteCount];
-    this.bb.get(data);
-    return Base64.getEncoder().encodeToString(data);
-  }
-
-  private void parseTlsHandshake() {
-    handshakeType = TlsHandshake.Type.of(getInt8());
-    // Handshake Type
-    final String typeName = StringUtils.defaultIfEmpty(handshakeType.getName(), TlsHandshake.Name.UNASSIGNED);
-    addField(TlsHandshake.Fields.TYPE, typeName);
-
-    // Length
-    addField(TlsHandshake.Fields.LENGTH, getInt24());
-  }
-
-  private void parseTlsRecordHeader() {
+  private void parseTlsRecordHeader() throws JsonParseException {
     // Record Type
     recordType = TlsRecord.Type.of(getInt8());
     final String typeName = StringUtils.defaultIfEmpty(recordType.getName(), TlsRecord.Name.UNASSIGNED);
@@ -234,7 +212,53 @@ public class TlsParser extends ParserMinimalBase {
     addField(TlsRecord.Fields.PROTOCOL, getInt16());
 
     // Length
-    addField(TlsRecord.Fields.LENGTH, getInt16());
+    addField(TlsRecord.Fields.LENGTH, ensureReadLength(getInt16(), "Invalid Record Header length {} byte"));
+  }
+
+  private void parseTlsHandshake() throws JsonParseException {
+    handshakeType = TlsHandshake.Type.of(getInt8());
+    // Handshake Type
+    final String typeName = StringUtils.defaultIfEmpty(handshakeType.getName(), TlsHandshake.Name.UNASSIGNED);
+    addField(TlsHandshake.Fields.TYPE, typeName);
+
+    // Length
+    handshakeLength = ensureReadLength(getInt24(), "Invalid Handshake Header length of {0} byte");
+    addField(TlsHandshake.Fields.LENGTH, handshakeLength);
+  }
+
+  private void parseClientHello() throws JsonParseException {
+    // check if we can at least red the minimum size of ClientHello
+    ensureMinLength(handshakeLength, 41, "Invalid ClientHello length of {0} byte the minimum length possible is {1} byte");
+
+    // Protocol Version
+    addField(TlsClientHello.Fields.LEGACY_VERSION, getInt16()); // 2 Byte
+
+    // Random
+    addField(TlsClientHello.Fields.RANDOM, getBase64String(32)); // 32 Byte
+
+    // SessionId
+    addField(TlsClientHello.Fields.SESSIONID, getBase64String(ensureReadLength(getInt8(), "Invalid ClientHello SessionId length of {0} byte"))); // 1 Byte Length (min) + length
+
+    // Cipher Suites
+    // 2 byte (min)
+    // TODO: parse Cipher Suites
+    addField(TlsClientHello.Fields.CIPHER_SUITES);
+    addToken(JsonToken.START_ARRAY);
+
+    addToken(JsonToken.END_ARRAY);
+
+    // Compression Methods
+    // 2 byte
+    // TODO: parse Compression Methods
+    addField(TlsClientHello.Fields.COMPRESSION_METHOD, "none");
+
+    // Extensions
+    // 2 byte (min)
+    // TODO: parse Extensions
+    addField(TlsClientHello.Fields.EXTENSIONS);
+    addToken(JsonToken.START_ARRAY);
+
+    addToken(JsonToken.END_ARRAY);
   }
 
   @FunctionalInterface
@@ -243,6 +267,11 @@ public class TlsParser extends ParserMinimalBase {
   }
 
   private Queue<Token> tokenQueue = new ConcurrentLinkedQueue<>();
+  private long numberLong;
+  private float numberFloat;
+  private double numberDouble;
+  private BigDecimal numberBigDecimal;
+  private BigInteger numberBigInterger;
 
   private JsonToken deQueuedToken() throws IOException {
     return tokenQueue.poll().apply();
@@ -489,55 +518,175 @@ public class TlsParser extends ParserMinimalBase {
 
   @Override
   public long getLongValue() throws IOException {
-    // TODO Auto-generated method stub
-    return 0;
+    return numberLong;
   }
 
   @Override
   public BigInteger getBigIntegerValue() throws IOException {
-    // TODO Auto-generated method stub
-    return null;
+    return numberBigInterger;
   }
 
   @Override
   public float getFloatValue() throws IOException {
-    // TODO Auto-generated method stub
-    return 0;
+    return numberFloat;
   }
 
   @Override
   public double getDoubleValue() throws IOException {
-    // TODO Auto-generated method stub
-    return 0;
+    return numberDouble;
   }
 
   @Override
   public BigDecimal getDecimalValue() throws IOException {
-    // TODO Auto-generated method stub
-    return null;
+    return numberBigDecimal;
   }
 
   @Override
   public int releaseBuffered(OutputStream out) throws IOException {
-    // TODO: do we need this?
-    return super.releaseBuffered(out);
+    int remaining = this.bb.remaining();
+    if (remaining > 0) {
+      byte[] unread = new byte[remaining];
+      this.bb.get(unread);
+      IOUtils.copy(new ByteArrayInputStream(unread), out);
+    }
+    return remaining;
   }
 
+  /**
+   * Ensures the given length in bytes can be read from input
+   * 
+   * @param length
+   * @return
+   */
+  private boolean canRead(int length) {
+    return canRead(length, this.bb.limit());
+  }
+
+  /**
+   * Ensures the given length in bytes can be read from input and is wihin the provided limit
+   * 
+   * @param length
+   * @param limit
+   * @return
+   */
+  private boolean canRead(int length, int limit) {
+    int pos = this.bb.position();
+    int upperLimit = Math.min(limit, this.bb.limit());
+    return (pos + length <= upperLimit);
+  }
+
+  /**
+   * Throws a JsonParseException if given length is outside of the limitation of the input
+   * 
+   * @param length
+   * @param msg
+   * @return
+   * @throws JsonParseException
+   */
+  private int ensureReadLength(int length, String msg) throws JsonParseException {
+    if (!canRead(length)) {
+      throw new JsonParseException(this, MessageFormat.format(StringUtils.defaultIfEmpty(msg, "The length of {0} byte exeeds the limits of the data structure"), length));
+    }
+    return length;
+  }
+
+  /**
+   * Throws a JsonParseException if given length is outside of the given limitations
+   * 
+   * @param length
+   * @param maxLength
+   * @param msg
+   * @return
+   * @throws JsonParseException
+   */
+  private int ensureReadLength(int length, int maxLength, String msg) throws JsonParseException {
+    if (!canRead(length, maxLength)) {
+      throw new JsonParseException(this, MessageFormat.format(StringUtils.defaultIfEmpty(msg, "The length of {0} byte exeeds the limits of the data structure"), length));
+    }
+    return length;
+  }
+
+  /**
+   * Throws a JsonParseException if given minLength is smaller then the length left to read
+   * 
+   * @param minLength
+   * @param msg
+   * @throws JsonParseException
+   */
+  private void ensureMinLength(int minLength, String msg) throws JsonParseException {
+    int pos = this.bb.position();
+    int limit = this.bb.limit();
+    int length = limit - pos;
+    ensureMinLength(length, minLength, msg);
+  }
+
+  /**
+   * Throws a JsonParseException if given length is smaller then minLength
+   * 
+   * @param length
+   * @param minLength
+   * @param msg
+   * @throws JsonParseException
+   */
+  private void ensureMinLength(int length, int minLength, String msg) throws JsonParseException {
+    if (length < minLength) {
+      throw new JsonParseException(this,
+          MessageFormat.format(StringUtils.defaultIfEmpty(msg, "The length of {0} byte for the data structure is too small with a min length of {1} bytes"), length, minLength));
+    }
+  }
+
+  /**
+   * Returns the given byte count as base64 encoded string
+   * 
+   * @param byteCount
+   * @return
+   */
+  private String getBase64String(int byteCount) {
+    byte[] data = new byte[byteCount];
+    this.bb.get(data);
+    return Base64.getEncoder().encodeToString(data);
+  }
+
+  /**
+   * Convertes 1 byte to an int
+   * 
+   * @return
+   */
   private int getInt8() {
     byte b = this.bb.get();
     return (b & 0xFF);
   }
 
+  /**
+   * Convertes 2 byte to an int
+   * 
+   * @return
+   */
   private int getInt16() {
     byte[] data = new byte[2];
     this.bb.get(data);
     return ((data[0] & 0xFF) << 8) | (data[1] & 0xFF);
   }
 
+  /**
+   * Convertes 3 byte to an int
+   * 
+   * @return
+   */
   private int getInt24() {
     byte[] data = new byte[3];
     this.bb.get(data);
     return ((data[0] & 0xFF) << 16) | ((data[1] & 0xFF) << 8) | (data[2] & 0xFF);
   }
 
+  /**
+   * Convertes 4 byte to an int
+   * 
+   * @return
+   */
+  private int getInt32() {
+    byte[] data = new byte[4];
+    this.bb.get(data);
+    return ((data[0] & 0xFF) << 24) | ((data[1] & 0xFF) << 16) | ((data[2] & 0xFF) << 8) | (data[3] & 0xFF);
+  }
 }
