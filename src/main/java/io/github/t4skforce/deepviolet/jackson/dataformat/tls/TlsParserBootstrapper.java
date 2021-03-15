@@ -8,8 +8,8 @@ import com.fasterxml.jackson.core.io.IOContext;
 import com.fasterxml.jackson.core.sym.ByteQuadsCanonicalizer;
 
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.annotations.TlsRecord;
+import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.TlsVersion;
 import io.github.t4skforce.deepviolet.protocol.tls.TlsRecordTyp;
-import io.github.t4skforce.deepviolet.protocol.tls.TlsVersion;
 import io.github.t4skforce.deepviolet.protocol.tls.util.TlsUtils;
 
 import java.io.IOException;

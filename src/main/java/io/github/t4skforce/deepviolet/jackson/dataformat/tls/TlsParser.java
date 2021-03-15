@@ -237,14 +237,22 @@ public class TlsParser extends ParserMinimalBase {
     addField(TlsClientHello.Fields.RANDOM, getBase64String(32)); // 32 Byte
 
     // SessionId
-    addField(TlsClientHello.Fields.SESSIONID, getBase64String(ensureReadLength(getInt8(), "Invalid ClientHello SessionId length of {0} byte"))); // 1 Byte Length (min) + length
+    int sessionLength = ensureReadLength(getInt8(), "Invalid ClientHello SessionId length of {0} byte"); // 1 Byte Length (min) + length
+    addField(TlsClientHello.Fields.SESSIONID, getBase64String(sessionLength));
 
     // Cipher Suites
     // 2 byte (min)
-    // TODO: parse Cipher Suites
+    int cipherMaxLength = handshakeLength - (38 + sessionLength);
+    int cipherLength = ensureReadLength(getInt16(), cipherMaxLength, "Invalid ClientHello Cipher Suite length of {0} byte exeeds {1} of max length");
+    if (cipherLength % 2 != 0) {
+      throw new JsonParseException(this, MessageFormat.format("Invalid ClientHello Cipher Suite length of {0} must be an even number", cipherLength));
+    }
+
     addField(TlsClientHello.Fields.CIPHER_SUITES);
     addToken(JsonToken.START_ARRAY);
-
+    for (int i = 0; i < cipherLength / 2; i++) {
+      addValue(getInt16());
+    }
     addToken(JsonToken.END_ARRAY);
 
     // Compression Methods
@@ -296,6 +304,22 @@ public class TlsParser extends ParserMinimalBase {
 
   private void addField(String name, String value) {
     addField(name);
+    addValue(value);
+  }
+
+  private void addField(String name, Integer value) {
+    addField(name);
+    addValue(value);
+  }
+
+  private void addValue(Integer value) {
+    addToken(() -> {
+      numberInt = value;
+      return (_currToken = JsonToken.VALUE_NUMBER_INT);
+    });
+  }
+
+  private void addValue(String value) {
     if (emptyStringsToNull && StringUtils.isEmpty(value)) {
       addToken(() -> {
         return (_currToken = JsonToken.VALUE_NULL);
@@ -306,14 +330,6 @@ public class TlsParser extends ParserMinimalBase {
         return (_currToken = JsonToken.VALUE_STRING);
       });
     }
-  }
-
-  private void addField(String name, Integer value) {
-    addField(name);
-    addToken(() -> {
-      numberInt = value;
-      return (_currToken = JsonToken.VALUE_NUMBER_INT);
-    });
   }
 
   private void throwParserException(String msg) {
@@ -601,7 +617,7 @@ public class TlsParser extends ParserMinimalBase {
    */
   private int ensureReadLength(int length, int maxLength, String msg) throws JsonParseException {
     if (!canRead(length, maxLength)) {
-      throw new JsonParseException(this, MessageFormat.format(StringUtils.defaultIfEmpty(msg, "The length of {0} byte exeeds the limits of the data structure"), length));
+      throw new JsonParseException(this, MessageFormat.format(StringUtils.defaultIfEmpty(msg, "The length of {0} byte exeeds the limits of the data structure of {1} bytes"), length, maxLength));
     }
     return length;
   }

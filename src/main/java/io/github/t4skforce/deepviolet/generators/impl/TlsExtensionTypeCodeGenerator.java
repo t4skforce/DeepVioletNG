@@ -17,12 +17,15 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
+import io.github.t4skforce.deepviolet.generators.JavaFileGenerator;
 import io.github.t4skforce.deepviolet.generators.mapper.deserializer.BooleanDeserializer;
 import io.github.t4skforce.deepviolet.protocol.tls.exception.TlsProtocolException;
 import io.github.t4skforce.deepviolet.protocol.tls.util.TlsUtils;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -51,11 +54,6 @@ public class TlsExtensionTypeCodeGenerator extends HttpRequestCodeGenerator {
     super();
     setCacheMaxAgeUnit(TimeUnit.DAYS);
     setCacheMaxAgeValue(1);
-  }
-
-  @Override
-  public String getTargetCanonicalName() {
-    return TARGET_CLASS_NAME;
   }
 
   @Override
@@ -192,7 +190,12 @@ public class TlsExtensionTypeCodeGenerator extends HttpRequestCodeGenerator {
   }
 
   @Override
-  protected void doBuild(CloseableHttpResponse response) {
+  protected String getClassName() {
+    return TARGET_CLASS_NAME;
+  }
+
+  @Override
+  protected void process(CloseableHttpResponse response) throws Exception {
     typeSpec.addJavadoc("<br/>based on <a href=$S>www.iana.org</a> specification", SOURCE_URL);
 
     // private static fields
@@ -281,6 +284,11 @@ public class TlsExtensionTypeCodeGenerator extends HttpRequestCodeGenerator {
         .addStatement("return false").endControlFlow().addStatement("return $N != (($N) $N).$N", value, self.simpleName(), objParam, value).build();
     typeSpec.addMethod(equals);
 
+  }
+
+  @Override
+  protected List<JavaFileGenerator> getTests() throws Exception {
+    return Collections.emptyList();
   }
 
 }

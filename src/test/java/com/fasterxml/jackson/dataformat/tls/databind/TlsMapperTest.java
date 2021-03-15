@@ -10,11 +10,11 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.TlsParser;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.databind.TlsMapper;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.AbstractRecord;
+import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.TlsVersion;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.record.Handshake;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.record.UnassignedRecord;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.record.handshake.ClientHello;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.record.handshake.HandshakeMessage;
-import io.github.t4skforce.deepviolet.protocol.tls.TlsVersion;
 
 import java.io.ByteArrayInputStream;
 

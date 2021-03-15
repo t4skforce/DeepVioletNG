@@ -10,7 +10,6 @@ import io.github.t4skforce.deepviolet.jackson.dataformat.tls.annotations.TlsReco
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.record.ChangeCipherSpec;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.record.Handshake;
 import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.record.UnassignedRecord;
-import io.github.t4skforce.deepviolet.protocol.tls.TlsVersion;
 
 @TlsRecord
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = TlsRecord.Fields.TYPE, defaultImpl = UnassignedRecord.class)

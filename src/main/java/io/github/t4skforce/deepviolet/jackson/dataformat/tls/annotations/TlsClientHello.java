@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @JacksonAnnotationsInside
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder(value = { "legacy_version", "random", "sessionId" })
+@JsonPropertyOrder(value = { "type", "length", "legacy_version", "random", "sessionId", "cipherSuites", "commpressionMethod", "extensions" })
 @JsonTypeName(TlsHandshake.Name.CLIENT_HELLO)
 public @interface TlsClientHello {
 

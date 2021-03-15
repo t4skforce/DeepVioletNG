@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -31,13 +32,11 @@ class SimpleTlsServerTest {
       // Client Version
       (byte) 0x03, (byte) 0x03, // The protocol version of "3,3" (meaning TLS 1.2) is given.
       // Client Random
-      (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x06,
-      (byte) 0x07, (byte) 0x08, (byte) 0x09, (byte) 0x0a, (byte) 0x0b, (byte) 0x0c, (byte) 0x0d,
-      (byte) 0x0e, (byte) 0x0f, (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13, (byte) 0x14,
-      (byte) 0x15, (byte) 0x16, (byte) 0x17, (byte) 0x18, (byte) 0x19, (byte) 0x1a, (byte) 0x1b,
-      (byte) 0x1c, (byte) 0x1d, (byte) 0x1e, (byte) 0x1f, // The client provides 32 bytes of random
-                                                          // data. In this example we've made the
-                                                          // random data a predictable string.
+      (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07, (byte) 0x08, (byte) 0x09, (byte) 0x0a, (byte) 0x0b, (byte) 0x0c, (byte) 0x0d, (byte) 0x0e,
+      (byte) 0x0f, (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13, (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17, (byte) 0x18, (byte) 0x19, (byte) 0x1a, (byte) 0x1b, (byte) 0x1c, (byte) 0x1d,
+      (byte) 0x1e, (byte) 0x1f, // The client provides 32 bytes of random
+                                // data. In this example we've made the
+                                // random data a predictable string.
       // Session ID
       (byte) 0x00, // 00 - length of zero (no session id is provided)
       // Cipher Suites
@@ -73,10 +72,9 @@ class SimpleTlsServerTest {
       (byte) 0x00, (byte) 0x16, // 00 16 - 0x16 (22) bytes of first (and only) list entry follows
       (byte) 0x00, // 00 - list entry is type 0x00 "DNS hostname"
       (byte) 0x00, (byte) 0x13, // 00 13 - 0x13 (19) bytes of hostname follows
-      (byte) 0x65, (byte) 0x78, (byte) 0x61, (byte) 0x6d, (byte) 0x70, (byte) 0x6c, (byte) 0x65,
-      (byte) 0x2e, (byte) 0x75, (byte) 0x6c, (byte) 0x66, (byte) 0x68, (byte) 0x65, (byte) 0x69,
-      (byte) 0x6d, (byte) 0x2e, (byte) 0x6e, (byte) 0x65, (byte) 0x74, // 65 78 61 ... 6e 65 74 -
-                                                                       // "example.ulfheim.net"
+      (byte) 0x65, (byte) 0x78, (byte) 0x61, (byte) 0x6d, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x2e, (byte) 0x75, (byte) 0x6c, (byte) 0x66, (byte) 0x68, (byte) 0x65, (byte) 0x69, (byte) 0x6d,
+      (byte) 0x2e, (byte) 0x6e, (byte) 0x65, (byte) 0x74, // 65 78 61 ... 6e 65 74 -
+                                                          // "example.ulfheim.net"
       // Extension - Status Request
       (byte) 0x00, (byte) 0x05, // 00 05 - assigned value for extension "status request"
       (byte) 0x00, (byte) 0x05, // 00 05 - 0x5 (5) bytes of "status request" extension data follows
@@ -124,13 +122,16 @@ class SimpleTlsServerTest {
                                // data follows
   };
 
-  @Test @SimpleTlsServerConfig(port = 5000)
+  @Ignore
+  @Test
+  @SimpleTlsServerConfig(port = 5000)
   void testExternal(SimpleTlsServer server) throws Exception {
     System.out.println(server.getHost() + ":" + server.getPort());
     Thread.sleep(300000);
   }
 
-  @Test @SimpleTlsServerConfig(port = 5000)
+  @Test
+  @SimpleTlsServerConfig(port = 5000)
   void test(SimpleTlsServer server) throws Exception {
 //    System.out.println(server.getHost() + ":" + server.getPort());
 //    Thread.sleep(300000);
@@ -145,8 +146,7 @@ class SimpleTlsServerTest {
     InetAddress ip = InetAddress.getByName(server.getHost());
     Socket socket = new Socket(ip, server.getPort());
 
-    try (DataInputStream in = new DataInputStream(socket.getInputStream());
-        DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
+    try (DataInputStream in = new DataInputStream(socket.getInputStream()); DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
       out.write(CLIENT_HELLO_TLS_1_0);
       in.readAllBytes();
       assertTrue(true);

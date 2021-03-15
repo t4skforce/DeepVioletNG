@@ -1,5 +1,6 @@
 package io.github.t4skforce.deepviolet.protocol.tls;
 
+import io.github.t4skforce.deepviolet.jackson.dataformat.tls.model.TlsVersion;
 import io.github.t4skforce.deepviolet.protocol.tls.exception.TlsProtocolException;
 import io.github.t4skforce.deepviolet.protocol.tls.handshake.TlsHandshakeType;
 import io.github.t4skforce.deepviolet.protocol.tls.message.TlsClientHello;
