@@ -1,10 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>io.github.t4skforce</groupId>
 	<artifactId>DeepVioletNG</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
 	<name>DeepVioletNG</name>
 	<description>Tool for introspection of SSL/TLS sessions</description>
 	<url>https://t4skforce.github.io/DeepVioletNG/</url>
@@ -18,27 +22,18 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.source.version>1.8</java.source.version>
-		<java.target.version>1.8</java.target.version>
-		<jackson.databind>2.12.1</jackson.databind>
-		<commons.lang3>3.11</commons.lang3>
-		<commons.collections4>4.4</commons.collections4>
-		<commons.io>2.8.0</commons.io>
-		<guava>30.1-jre</guava>
-		<maven.compiler.plugin>3.8.1</maven.compiler.plugin>
-		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
-		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
-		<maven.release.plugin>2.5.3</maven.release.plugin>
-		<maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
-		<maven.pmd.plugin>3.14.0</maven.pmd.plugin>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<spotbugs.maven.plugin>4.2.0</spotbugs.maven.plugin>
-		<exec.maven.plugin>3.0.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.6</jacoco.maven.plugin>
 		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
+		<maven.failsafe.plugin>3.0.0-M5</maven.failsafe.plugin>
 		<junit.jupiter>5.7.1</junit.jupiter>
-		<com.google.truth>1.1.2</com.google.truth>
+		<junit.platform.version>1.3.2</junit.platform.version>
+		<jacoco.maven.plugin>0.8.6</jacoco.maven.plugin>
 		<sonar.projectKey>t4skforce_DeepVioletNG</sonar.projectKey>
 		<sonar.organization>deepvioletng</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -47,12 +42,14 @@
 		<sonar.java.pmd.reportPaths>${project.build.directory}/pmd.xml</sonar.java.pmd.reportPaths>
 		<sonar.java.spotbugs.reportPaths>${project.build.directory}/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
 	</properties>
+
 	<scm>
 		<connection>scm:git:${project.scm.url}</connection>
 		<developerConnection>scm:git:${project.scm.url}</developerConnection>
 		<url>https://github.com/t4skforce/DeepVioletNG.git</url>
 		<tag>HEAD</tag>
 	</scm>
+
 	<distributionManagement>
 		<repository>
 			<id>ossrh</id>
@@ -60,115 +57,12 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${commons.lang3}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-collections4</artifactId>
-			<version>${commons.collections4}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons.io}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient-cache -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient-cache</artifactId>
-			<version>4.5.13</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.squareup/javapoet -->
-		<dependency>
-			<groupId>com.squareup</groupId>
-			<artifactId>javapoet</artifactId>
-			<version>1.13.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.12</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>1.13.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.databind}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-csv -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-csv</artifactId>
-			<version>2.12.2</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>2.12.2</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.codehaus.woodstox/woodstox-core-asl -->
-		<dependency>
-			<groupId>org.codehaus.woodstox</groupId>
-			<artifactId>woodstox-core-asl</artifactId>
-			<version>4.4.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-yaml</artifactId>
-			<version>2.12.2</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.30</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.truth</groupId>
-			<artifactId>truth</artifactId>
-			<version>${com.google.truth}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>3.7.7</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-inline -->
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-inline</artifactId>
-			<version>3.7.7</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.jupiter}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -178,253 +72,112 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-params</artifactId>
-			<version>${junit.jupiter}</version>
-			<scope>test</scope>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.30</version>
 		</dependency>
 	</dependencies>
+
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.maven.plugin}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler.plugin}</version>
-				<configuration>
-					<source>${java.source.version}</source>
-					<target>${java.target.version}</target>
-					<verbose>true</verbose>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>${exec.maven.plugin}</version>
-				<executions>
-					<execution>
-						<id>generate-sources</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>io.github.t4skforce.deepviolet.generators.MainCodeGenerator</mainClass>
-							<arguments>
-								<argument>source</argument>
-								<argument>${project.basedir}/src/main/java</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>generate-test-sources</id>
-						<phase>generate-test-sources</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>io.github.t4skforce.deepviolet.generators.MainCodeGenerator</mainClass>
-							<arguments>
-								<argument>test</argument>
-								<argument>${project.basedir}/src/test/java</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>CipherMap</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>io.github.t4skforce.deepviolet.json.CipherMap</mainClass>
-							<arguments>
-								<argument>${project.build.resources[0].directory}</argument>
-							</arguments>
-						</configuration>
-					</execution>
-				</executions>
-
-			</plugin>
-
-			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.plugin}</version>
 				<configuration>
-					<excludes>
-						<exclude>**/*IntegrationTest</exclude>
-					</excludes>
+					<!-- Sets the VM argument line used when unit tests are run. -->
+					<argLine>${surefireArgLine}</argLine>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.junit.platform</groupId>
+						<artifactId>junit-platform-surefire-provider</artifactId>
+						<version>${junit.platform.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven.failsafe.plugin}</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the VM argument line used when integration tests are run. -->
+							<argLine>${failsafeArgLine}</argLine>
+							<includes>
+								<include>**/IntegrationTest.java</include>
+							</includes>
+							<excludes>
+								<exclude>**/*Tests.java</exclude>
+								<exclude>**/*Test.java</exclude>
+							</excludes>
+							<additionalClasspathElements>
+								<additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
+							</additionalClasspathElements>
+							<parallel>none</parallel>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.junit.platform</groupId>
+						<artifactId>junit-platform-surefire-provider</artifactId>
+						<version>${junit.platform.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.maven.plugin}</version>
 				<executions>
+					<!-- set arg line property for surefire -->
 					<execution>
 						<id>prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
+						<configuration>
+							<propertyName>surefireArgLine</propertyName>
+						</configuration>
 					</execution>
+					<!-- set arg line property for failsafe -->
 					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
+						<id>prepare-agent-integration</id>
 						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${maven.checkstyle.plugin}</version>
-				<configuration>
-					<configLocation>checkstyle.xml</configLocation>
-					<violationSeverity>warning</violationSeverity>
-					<consoleOutput>true</consoleOutput>
-					<failsOnError>false</failsOnError>
-					<includeTestSourceDirectory>false</includeTestSourceDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
+							<goal>prepare-agent-integration</goal>
 						</goals>
 						<configuration>
-							<archive>
-								<manifest>
-									<mainClass>
-										io.github.t4skforce.deepviolet.Main
-									</mainClass>
-								</manifest>
-							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<updateOnly>true</updateOnly>
-							<appendAssemblyId>false</appendAssemblyId>
+							<propertyName>failsafeArgLine</propertyName>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>${maven.release.plugin}</version>
-				<configuration>
-					<scmCommentPrefix>[ci skip]</scmCommentPrefix>
-				</configuration>
-			</plugin>
-			<!-- FIX: for mvn site not working for report generation -->
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.9.1</version>
-			</plugin>
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>3.1.1</version>
-			</plugin>
+
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>surefire</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>${maven.surefire.plugin}</version>
-						<executions>
-							<execution>
-								<phase>integration-test</phase>
-								<goals>
-									<goal>test</goal>
-								</goals>
-								<configuration>
-									<excludes>
-										<exclude>none</exclude>
-									</excludes>
-									<includes>
-										<include>**/*IntegrationTest</include>
-									</includes>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${maven.checkstyle.plugin}</version>
-				<configuration>
-					<configLocation>checkstyle.xml</configLocation>
-					<violationSeverity>warning</violationSeverity>
-					<consoleOutput>true</consoleOutput>
-					<failsOnError>false</failsOnError>
-					<includeTestSourceDirectory>false</includeTestSourceDirectory>
-				</configuration>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>checkstyle</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>${maven.pmd.plugin}</version>
-			</plugin>
-			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>${spotbugs.maven.plugin}</version>
-				<configuration>
-					<effort>Max</effort>
-					<threshold>Low</threshold>
-					<spotbugsXmlOutput>true</spotbugsXmlOutput>
-					<spotbugsXmlOutputDirectory>${project.build.directory}/site</spotbugsXmlOutputDirectory>
-					<skipEmptyReport>false</skipEmptyReport>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<includeTests>true</includeTests>
-					<classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
-					<spotbugs.xmlOutput>true</spotbugs.xmlOutput>
-					<plugins>
-						<plugin>
-							<groupId>com.h3xstream.findsecbugs</groupId>
-							<artifactId>findsecbugs-plugin</artifactId>
-							<version>1.11.0</version>
-						</plugin>
-					</plugins>
-				</configuration>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>spotbugs</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</reporting>
+	<modules>
+		<module>codegen</module>
+		<module>core</module>
+		<module>server</module>
+		<module>client</module>
+		<module>coverage</module>
+	</modules>
 </project>

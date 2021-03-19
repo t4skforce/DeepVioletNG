@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>DeepVioletNG</artifactId>
+    <groupId>io.github.t4skforce</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>io.github.t4skforce</groupId>
+  <artifactId>coverage</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>coverage</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+   <dependency>
+      <groupId>io.github.t4skforce</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.t4skforce</groupId>
+      <artifactId>server</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.t4skforce</groupId>
+      <artifactId>client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <!--aggregated unit test coverage report -->
+          <execution>
+            <id>aggregate-reports-ut</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <configuration>
+              <title>DeepVioletNG: Coverage of Unit Tests</title>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate-ut</outputDirectory>
+              <dataFileExcludes>
+                <dataFileExclude>**/target/jacoco-it.exec</dataFileExclude>
+              </dataFileExcludes>
+            </configuration>
+          </execution>
+          <!-- aggregated integration test coverage report -->
+          <execution>
+            <id>aggregate-reports-it</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <configuration>
+              <title>DeepVioletNG: Coverage of Integration Tests</title>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate-it</outputDirectory>
+              <dataFileExcludes>
+                <dataFileExclude>**/target/jacoco.exec</dataFileExclude>
+              </dataFileExcludes>
+            </configuration>
+          </execution>
+          <!-- aggregated overallall test coverage report -->
+          <execution>
+            <id>aggregate-reports-all</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <configuration>
+              <title>DeepVioletNG: Overall Coverage </title>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate-all</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
