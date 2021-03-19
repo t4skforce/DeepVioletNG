@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>io.github.t4skforce</groupId>
-	<artifactId>DeepVioletNG-Core</artifactId>
+	<artifactId>Core</artifactId>
 
 	<name>core</name>
 	<description>Java library for introspection of SSL/TLS sessions</description>

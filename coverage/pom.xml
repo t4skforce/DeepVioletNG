@@ -8,7 +8,7 @@
   </parent>
 
   <groupId>io.github.t4skforce</groupId>
-  <artifactId>coverage</artifactId>
+  <artifactId>Coverage</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>coverage</name>

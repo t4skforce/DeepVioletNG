@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>io.github.t4skforce</groupId>
-	<artifactId>DeepVioletNG-server</artifactId>
+	<artifactId>Server</artifactId>
 
 	<name>server</name>
 
