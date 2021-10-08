@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.source.version>1.8</java.source.version>
 		<java.target.version>1.8</java.target.version>
-		<jackson.databind>2.12.5</jackson.databind>
+		<jackson.databind>2.13.0</jackson.databind>
 		<commons.lang3>3.12.0</commons.lang3>
 		<commons.collections4>4.4</commons.collections4>
 		<commons.io>2.8.0</commons.io>
