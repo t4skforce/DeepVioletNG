@@ -31,9 +31,9 @@
 		<maven.surefire.plugin>3.0.0-M7</maven.surefire.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<maven.release.plugin>2.5.3</maven.release.plugin>
-		<maven.checkstyle.plugin>3.1.2</maven.checkstyle.plugin>
-		<maven.pmd.plugin>3.17.0</maven.pmd.plugin>
-		<spotbugs.maven.plugin>4.7.1.1</spotbugs.maven.plugin>
+		<maven.checkstyle.plugin>3.2.0</maven.checkstyle.plugin>
+		<maven.pmd.plugin>3.19.0</maven.pmd.plugin>
+		<spotbugs.maven.plugin>4.7.2.0</spotbugs.maven.plugin>
 		<exec.maven.plugin>3.1.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.8</jacoco.maven.plugin>
 		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
@@ -95,14 +95,14 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>4.6.1</version>
+			<version>4.8.0</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-inline -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-inline</artifactId>
-			<version>4.6.1</version>
+			<version>4.8.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -234,7 +234,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 			</plugin>
 		</plugins>
 	</build>
