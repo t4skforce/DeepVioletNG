@@ -28,7 +28,7 @@
 		<commons.io>2.8.0</commons.io>
 		<guava>31.1-jre</guava>
 		<maven.compiler.plugin>3.11.0</maven.compiler.plugin>
-		<maven.surefire.plugin>3.0.0</maven.surefire.plugin>
+		<maven.surefire.plugin>3.1.0</maven.surefire.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<maven.release.plugin>3.0.0</maven.release.plugin>
 		<maven.checkstyle.plugin>3.2.2</maven.checkstyle.plugin>
