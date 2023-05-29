@@ -32,7 +32,7 @@
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<maven.release.plugin>3.0.0</maven.release.plugin>
 		<maven.checkstyle.plugin>3.3.0</maven.checkstyle.plugin>
-		<maven.pmd.plugin>3.20.0</maven.pmd.plugin>
+		<maven.pmd.plugin>3.21.0</maven.pmd.plugin>
 		<spotbugs.maven.plugin>4.7.3.4</spotbugs.maven.plugin>
 		<exec.maven.plugin>3.1.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.10</jacoco.maven.plugin>
