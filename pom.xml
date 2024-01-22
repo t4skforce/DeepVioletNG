@@ -38,7 +38,7 @@
 		<jacoco.maven.plugin>0.8.11</jacoco.maven.plugin>
 		<maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
 		<junit.jupiter>5.10.1</junit.jupiter>
-		<com.google.truth>1.2.0</com.google.truth>
+		<com.google.truth>1.3.0</com.google.truth>
 		<sonar.projectKey>t4skforce_DeepVioletNG</sonar.projectKey>
 		<sonar.organization>deepvioletng</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
