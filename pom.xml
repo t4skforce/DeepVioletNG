@@ -33,7 +33,7 @@
 		<maven.release.plugin>3.0.1</maven.release.plugin>
 		<maven.checkstyle.plugin>3.3.1</maven.checkstyle.plugin>
 		<maven.pmd.plugin>3.22.0</maven.pmd.plugin>
-		<spotbugs.maven.plugin>4.8.4.0</spotbugs.maven.plugin>
+		<spotbugs.maven.plugin>4.8.5.0</spotbugs.maven.plugin>
 		<exec.maven.plugin>3.2.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.12</jacoco.maven.plugin>
 		<maven.surefire.plugin>3.2.5</maven.surefire.plugin>
