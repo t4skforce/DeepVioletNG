@@ -31,7 +31,7 @@
 		<maven.surefire.plugin>3.2.5</maven.surefire.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
 		<maven.release.plugin>3.1.1</maven.release.plugin>
-		<maven.checkstyle.plugin>3.3.1</maven.checkstyle.plugin>
+		<maven.checkstyle.plugin>3.4.0</maven.checkstyle.plugin>
 		<maven.pmd.plugin>3.24.0</maven.pmd.plugin>
 		<spotbugs.maven.plugin>4.8.5.0</spotbugs.maven.plugin>
 		<exec.maven.plugin>3.3.0</exec.maven.plugin>
