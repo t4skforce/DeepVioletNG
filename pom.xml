@@ -23,7 +23,7 @@
 		<java.source.version>1.8</java.source.version>
 		<java.target.version>1.8</java.target.version>
 		<jackson.databind>2.17.2</jackson.databind>
-		<commons.lang3>3.16.0</commons.lang3>
+		<commons.lang3>3.17.0</commons.lang3>
 		<commons.collections4>4.4</commons.collections4>
 		<commons.io>2.8.0</commons.io>
 		<guava>33.3.0-jre</guava>
