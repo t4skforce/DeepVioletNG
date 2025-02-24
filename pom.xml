@@ -37,7 +37,7 @@
 		<exec.maven.plugin>3.5.0</exec.maven.plugin>
 		<jacoco.maven.plugin>0.8.12</jacoco.maven.plugin>
 		<maven.surefire.plugin>3.5.2</maven.surefire.plugin>
-		<junit.jupiter>5.11.3</junit.jupiter>
+		<junit.jupiter>5.12.0</junit.jupiter>
 		<com.google.truth>1.4.4</com.google.truth>
 		<sonar.projectKey>t4skforce_DeepVioletNG</sonar.projectKey>
 		<sonar.organization>deepvioletng</sonar.organization>
