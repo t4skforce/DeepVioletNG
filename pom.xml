@@ -26,7 +26,7 @@
 		<commons.lang3>3.19.0</commons.lang3>
 		<commons.collections4>4.5.0</commons.collections4>
 		<commons.io>2.8.0</commons.io>
-		<guava>33.4.8-jre</guava>
+		<guava>33.5.0-jre</guava>
 		<maven.compiler.plugin>3.14.0</maven.compiler.plugin>
 		<maven.surefire.plugin>3.5.3</maven.surefire.plugin>
 		<maven.dependency.plugin>3.1.2</maven.dependency.plugin>
