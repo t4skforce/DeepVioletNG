@@ -35,7 +35,7 @@
 		<maven.pmd.plugin>3.27.0</maven.pmd.plugin>
 		<spotbugs.maven.plugin>4.9.8.2</spotbugs.maven.plugin>
 		<exec.maven.plugin>3.6.3</exec.maven.plugin>
-		<jacoco.maven.plugin>0.8.13</jacoco.maven.plugin>
+		<jacoco.maven.plugin>0.8.14</jacoco.maven.plugin>
 		<maven.surefire.plugin>3.5.4</maven.surefire.plugin>
 		<junit.jupiter>6.0.2</junit.jupiter>
 		<com.google.truth>1.4.5</com.google.truth>
